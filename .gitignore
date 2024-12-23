@@ -1,0 +1,9 @@
+# Exclude directories and their contents
+SDL2/
+googletest/
+.vscode/
+
+# Exclude specific file types
+*.dll
+*.exe
+*.obj
