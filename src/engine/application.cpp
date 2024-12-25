@@ -20,10 +20,25 @@ Application::Application() {
     }
 
     SDL_RenderClear(this->renderer);
+    buffTex = SDL_CreateTexture(renderer,
+                                SDL_PIXELFORMAT_ARGB8888,
+                                SDL_TEXTUREACCESS_STREAMING,
+                                SCREEN_WIDTH,
+                                SCREEN_HEIGHT);
+    
+    if (buffTex == NULL) {
+        printf("SDL n'a pas pu créer la texture, erreur: %s\n", SDL_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        exit(1);
+    }
 }
 
 Application::~Application() {
+    SDL_DestroyTexture(this->buffTex);
     SDL_DestroyWindow(this->window);
+    SDL_DestroyRenderer(this->renderer);
     SDL_Quit();
 
 }
@@ -47,7 +62,7 @@ void Application::handleInput() {
 
 void Application::process() {
     camera.move(worldMap);
-    raycaster.cast_rays(this->camera, worldMap);
+    // raycaster.cast_rays(this->camera, worldMap);
 }
 
 void Application::render() {
@@ -61,7 +76,7 @@ void Application::render() {
     SDL_Rect bottomHalf = {0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2};
     SDL_RenderFillRect(renderer, &bottomHalf);
 
-    raycaster.render(this->renderer);
+    // raycaster.render(this->renderer, this->buffTex);
 
     SDL_RenderPresent(this->renderer);
 }

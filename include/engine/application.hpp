@@ -14,8 +14,9 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <engine/camera.hpp>
 #include <engine/constantes.hpp>
-#include <engine/raycaster.hpp>
+// #include <engine/raycaster.hpp>
 #include <engine/map.hpp>
 
 class Application {
@@ -23,7 +24,8 @@ class Application {
         SDL_Renderer* renderer;
         SDL_Window* window;
         Camera camera;
-        Raycaster raycaster;
+        SDL_Texture* buffTex;
+        // Raycaster raycaster;
     public:
         Application();
         ~Application();

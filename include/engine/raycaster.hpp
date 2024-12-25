@@ -18,20 +18,18 @@
 #include <engine/camera.hpp>
 #include <engine/constantes.hpp>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <cmath>
 #include <stdbool.h>
-#include <map>
-#include <tuple>
-
-using Distance = double;
-using Color = SDL_Color;
-using MapData = std::tuple<Color, Distance>;
+#include <vector>
 
 class Raycaster {
     private:
-        std::map<int, MapData> dataMap;
-    public:
-        Raycaster();
-        void cast_rays(Camera&, int[][MAP_WIDTH]);
-        void render(SDL_Renderer*);
+        // Uint32 buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
+        // std::vector<int> texture[8];
+    // public:
+    //     Raycaster();
+    //     ~Raycaster();
+    //     void cast_rays(Camera&, int[][MAP_WIDTH]);
+    //     void render(SDL_Renderer*, SDL_Texture*);
 };
