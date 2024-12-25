@@ -14,8 +14,7 @@
  */
 
 
-#ifndef VECTOR2D_H
-#define VECTOR2D_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
@@ -140,5 +139,3 @@ std::ostream& operator<<(std::ostream& os, const Vector2D<T>& obj) {
     os << "(x: " << obj.x << ", y: " << obj.y << ")";
     return os;
 }
-
-#endif // VECTOR2D_H

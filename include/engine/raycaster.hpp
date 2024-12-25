@@ -13,12 +13,16 @@
  * 
  */
 
-#include <camera.hpp>
-#include <constantes.hpp>
+#pragma once
+
+#include <engine/camera.hpp>
+#include <engine/constantes.hpp>
 #include <cmath>
+#include <SDL2/SDL.h>
+#include <stdbool.h>
 
 class Raycaster {
     public:
         Raycaster() = delete;
-        static void raycast(Camera&, int**);
+        static void raycast(Camera&, int[][24], SDL_Renderer*);
 };

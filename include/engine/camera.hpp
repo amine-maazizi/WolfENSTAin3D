@@ -12,11 +12,20 @@
  * 
  */
 
-#include <vector2D.hpp>
+#pragma once
+
+#include <engine/vector2D.hpp>
+#include <engine/constantes.hpp>
+#include <cmath> // For M_PI
 
 class Camera {
-    public:
-        Vector2D<double> position;
-        Vector2D<double> direction;
-        Vector2D<double> plane;
+public:
+    Vector2D<double> position; // Camera's position in the world
+    Vector2D<double> direction; // Camera's viewing direction
+    Vector2D<double> plane; // Camera plane for FOV projection
+    double moveSpeed; // Movement speed
+    double rotSpeed; // Rotation speed
+
+    Camera();
 };
+

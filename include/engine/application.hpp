@@ -14,12 +14,15 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
-#include <constantes.hpp>
+#include <engine/constantes.hpp>
+#include <engine/raycaster.hpp>
+#include <engine/map.hpp>
 
 class Application {
     private:
         SDL_Renderer* renderer;
         SDL_Window* window;
+        Camera camera;
     
     public:
         Application();

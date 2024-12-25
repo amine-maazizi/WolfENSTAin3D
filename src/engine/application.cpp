@@ -19,7 +19,6 @@ Application::Application() {
         exit(1);
     }
 
-    SDL_SetRenderDrawColor(this->renderer, 96, 128, 255, 255);
     SDL_RenderClear(this->renderer);
 }
 
@@ -45,11 +44,14 @@ void Application::handleInput() {
     }
 }
 
+
 void Application::process() {
-    
 }
 
 void Application::render() {
+    SDL_SetRenderDrawColor(this->renderer, 96, 128, 255, 255);
+    SDL_RenderClear(renderer);
+    Raycaster::raycast(this->camera, worldMap, this->renderer);
     SDL_RenderPresent(this->renderer);
 }
 
