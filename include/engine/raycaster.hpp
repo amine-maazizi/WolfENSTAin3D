@@ -6,11 +6,11 @@
  * @version     1.0
  * 
  * @details
- * cette classe se chargera de lancer l'algorithme de raycasting 
+ * cette classe seraint static se chargera de lancer l'algorithme de raycasting 
  * 
  * @note
- * 
- * 
+ * - raycasting basée sur DDA (Digital Differential Analysis)
+ * - Je vais séparer la partie raycasting et rendering pour que le code reste cohérrent avec la logique de l'engin, mais les fusionner serait plus performant
  */
 
 #pragma once
