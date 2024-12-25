@@ -46,12 +46,23 @@ void Application::handleInput() {
 
 
 void Application::process() {
+    camera.move(worldMap);
+    raycaster.cast_rays(this->camera, worldMap);
 }
 
 void Application::render() {
-    SDL_SetRenderDrawColor(this->renderer, 96, 128, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
     SDL_RenderClear(renderer);
-    Raycaster::raycast(this->camera, worldMap, this->renderer);
+
+    SDL_SetRenderDrawColor(renderer, 64, 96, 128, 255); 
+    SDL_Rect topHalf = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2};
+    SDL_RenderFillRect(renderer, &topHalf);
+    SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255); 
+    SDL_Rect bottomHalf = {0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2};
+    SDL_RenderFillRect(renderer, &bottomHalf);
+
+    raycaster.render(this->renderer);
+
     SDL_RenderPresent(this->renderer);
 }
 

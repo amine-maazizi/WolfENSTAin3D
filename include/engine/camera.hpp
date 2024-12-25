@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <SDL2/SDL.h>
 #include <engine/vector2D.hpp>
 #include <engine/constantes.hpp>
 #include <cmath> // pour PI
@@ -28,5 +29,6 @@ public:
     double rotSpeed; 
 
     Camera();
+    void move(int[MAP_HEIGHT][MAP_WIDTH]);
 };
 

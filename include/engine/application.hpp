@@ -23,7 +23,7 @@ class Application {
         SDL_Renderer* renderer;
         SDL_Window* window;
         Camera camera;
-    
+        Raycaster raycaster;
     public:
         Application();
         ~Application();

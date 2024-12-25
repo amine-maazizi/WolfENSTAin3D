@@ -2,7 +2,13 @@
 #include <SDL2/SDL.h>
 #include <cmath>
 
-void Raycaster::raycast(Camera& cam, int worldMap[][24], SDL_Renderer* renderer) {
+Raycaster::Raycaster() {
+    for (int x = 0; x < SCREEN_WIDTH; x++) {
+        this->dataMap[x] = std::make_tuple(SDL_Color {0, 0, 0}, -1);
+    }
+}
+
+void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
     // Parcourir toute bande verticale de l'écran
     for (int x = 0; x < SCREEN_WIDTH; x++) {
         // Calcul de la direction du rayon en x
@@ -73,17 +79,6 @@ void Raycaster::raycast(Camera& cam, int worldMap[][24], SDL_Renderer* renderer)
         if (wasHorizontal) perpWallDist = (sideDist.getX() - deltaDist.getX());
         else perpWallDist = (sideDist.getY() - deltaDist.getY());
 
-        //////////
-
-        // Calcul de la longeur de sa représentation
-        int lineHeight = (int)(SCREEN_HEIGHT / perpWallDist);
-
-        // Repartition de cette longeur de manière centrée
-        int drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
-        if (drawStart < 0) drawStart = 0;
-        int drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
-        if (drawEnd >= SCREEN_HEIGHT) drawEnd = SCREEN_HEIGHT - 1;
-
         // choix de la couleur
         SDL_Color color;
         switch (worldMap[map.getX()][map.getY()]) {
@@ -101,39 +96,31 @@ void Raycaster::raycast(Camera& cam, int worldMap[][24], SDL_Renderer* renderer)
             color.b /= 2;
         }
 
-        // Render the wall stripe
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-        SDL_RenderDrawLine(renderer, x, drawStart, x, drawEnd);
-    }
-
-    // Player Movement
-    const Uint8* keystate = SDL_GetKeyboardState(NULL);
-    if (keystate[SDL_SCANCODE_UP]) {
-        if (worldMap[int(cam.position.getX() + cam.direction.getX() * cam.moveSpeed)][int(cam.position.getY())] == 0)
-            cam.position.setX(cam.position.getX() + cam.direction.getX() * cam.moveSpeed);
-        if (worldMap[int(cam.position.getX())][int(cam.position.getY() + cam.direction.getY() * cam.moveSpeed)] == 0)
-            cam.position.setY(cam.position.getY() + cam.direction.getY() * cam.moveSpeed);
-    }
-    if (keystate[SDL_SCANCODE_DOWN]) {
-        if (worldMap[int(cam.position.getX() - cam.direction.getX() * cam.moveSpeed)][int(cam.position.getY())] == 0)
-            cam.position.setX(cam.position.getX() - cam.direction.getX() * cam.moveSpeed);
-        if (worldMap[int(cam.position.getX())][int(cam.position.getY() - cam.direction.getY() * cam.moveSpeed)] == 0)
-            cam.position.setY(cam.position.getY() - cam.direction.getY() * cam.moveSpeed);
-    }
-    if (keystate[SDL_SCANCODE_LEFT]) {
-        double oldDirX = cam.direction.getX();
-        cam.direction.setX(cam.direction.getX() * cos(cam.rotSpeed) - cam.direction.getY() * sin(cam.rotSpeed));
-        cam.direction.setY(oldDirX * sin(cam.rotSpeed) + cam.direction.getY() * cos(cam.rotSpeed));
-        double oldPlaneX = cam.plane.getX();
-        cam.plane.setX(cam.plane.getX() * cos(cam.rotSpeed) - cam.plane.getY() * sin(cam.rotSpeed));
-        cam.plane.setY(oldPlaneX * sin(cam.rotSpeed) + cam.plane.getY() * cos(cam.rotSpeed));
-    }
-    if (keystate[SDL_SCANCODE_RIGHT]) {
-        double oldDirX = cam.direction.getX();
-        cam.direction.setX(cam.direction.getX() * cos(-cam.rotSpeed) - cam.direction.getY() * sin(-cam.rotSpeed));
-        cam.direction.setY(oldDirX * sin(-cam.rotSpeed) + cam.direction.getY() * cos(-cam.rotSpeed));
-        double oldPlaneX = cam.plane.getX();
-        cam.plane.setX(cam.plane.getX() * cos(-cam.rotSpeed) - cam.plane.getY() * sin(-cam.rotSpeed));
-        cam.plane.setY(oldPlaneX * sin(-cam.rotSpeed) + cam.plane.getY() * cos(-cam.rotSpeed));
+        this->dataMap[x] = std::make_tuple(color, perpWallDist);
     }
 }
+
+
+void Raycaster::render(SDL_Renderer* renderer) {
+    for (int x = 0; x < SCREEN_WIDTH; x++) {
+        if (dataMap.find(x) != dataMap.end()) {
+            Color color;
+            Distance distance;
+            std::tie(color, distance) = dataMap[x];
+
+            // Calcul de la longeur de sa représentation
+            int lineHeight = (int)(SCREEN_HEIGHT / distance);
+
+            // Repartition de cette longeur de manière centrée
+            int drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
+            if (drawStart < 0) drawStart = 0;
+            int drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
+            if (drawEnd >= SCREEN_HEIGHT) drawEnd = SCREEN_HEIGHT - 1;
+
+        
+            // Render the wall stripe
+            SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            SDL_RenderDrawLine(renderer, x, drawStart, x, drawEnd);
+        }
+    }
+}   

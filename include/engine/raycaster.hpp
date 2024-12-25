@@ -17,12 +17,21 @@
 
 #include <engine/camera.hpp>
 #include <engine/constantes.hpp>
-#include <cmath>
 #include <SDL2/SDL.h>
+#include <cmath>
 #include <stdbool.h>
+#include <map>
+#include <tuple>
+
+using Distance = double;
+using Color = SDL_Color;
+using MapData = std::tuple<Color, Distance>;
 
 class Raycaster {
+    private:
+        std::map<int, MapData> dataMap;
     public:
-        Raycaster() = delete;
-        static void raycast(Camera&, int[][24], SDL_Renderer*);
+        Raycaster();
+        void cast_rays(Camera&, int[][MAP_WIDTH]);
+        void render(SDL_Renderer*);
 };
