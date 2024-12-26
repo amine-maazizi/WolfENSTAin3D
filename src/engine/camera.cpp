@@ -2,7 +2,7 @@
 
 
 Camera::Camera()
-    : position(12, 12),              
+    : position(22, 11.5),              
       direction(-1, 0),         
       plane(0, 0.66),               
       moveSpeed(0.05),              
