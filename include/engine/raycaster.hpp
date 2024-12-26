@@ -25,7 +25,7 @@
 
 class Raycaster {
     private:
-        Uint32** buffer;
+        Uint32* buffer;
         std::vector<int> texture[8];
     public:
         Raycaster();

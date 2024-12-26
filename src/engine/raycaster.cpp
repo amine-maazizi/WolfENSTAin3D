@@ -7,17 +7,8 @@ Raycaster::Raycaster() {
     }
 
     // Initialisation du buffer
-    buffer = new Uint32*[SCREEN_HEIGHT];
-    for (int i = 0; i < SCREEN_HEIGHT; ++i) 
-        buffer[i] = new Uint32[SCREEN_WIDTH];
-
-
-    // Initialize the array
-    for (int i = 0; i < SCREEN_HEIGHT; ++i)
-        for (int j = 0; j < SCREEN_WIDTH; ++j)
-            buffer[i][j] = 0;
-
-
+    buffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT]; // Contiguous memory allocation
+    std::fill(buffer, buffer + (SCREEN_WIDTH * SCREEN_HEIGHT), 0); 
 
     // Génération de textures selon des motifs
     for (int x = 0; x < TEX_WIDTH; x++) {
@@ -40,9 +31,7 @@ Raycaster::Raycaster() {
 
 Raycaster::~Raycaster() {
     // Deallocation
-     for (int i = 0; i < SCREEN_HEIGHT; ++i)
-            delete[] buffer[i];
-        delete[] buffer;
+    delete[] buffer;
 }
 
 void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
@@ -148,28 +137,16 @@ void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
             texPos += stripe_step;
             Uint32 color = texture[texNum][TEX_HEIGHT * texY + texX];
             if (!wasHorizontal) color = (color >> 1) & 8355711; // Assombrir pour les ombres
-            buffer[y][x] = color;
+            buffer[y * SCREEN_WIDTH + x] = color;
             }
 
     }
 }
 
 void Raycaster::render(SDL_Renderer* renderer, SDL_Texture* bufferTex) {
-    // Mettre à jour la texture avec le buffer
-    Uint32* flatBuffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
-    for (int y = 0; y < SCREEN_HEIGHT; ++y)
-        for (int x = 0; x < SCREEN_WIDTH; ++x)
-            flatBuffer[y * SCREEN_WIDTH + x] = buffer[y][x];
-
-    SDL_UpdateTexture(bufferTex, nullptr, flatBuffer, SCREEN_WIDTH * sizeof(Uint32));
-    delete[] flatBuffer;
-
+    SDL_UpdateTexture(bufferTex, nullptr, buffer, SCREEN_WIDTH * sizeof(Uint32));
     SDL_RenderCopy(renderer, bufferTex, nullptr, nullptr);
 
-    // Réinitialiser le buffer
-    for (int y = 0; y < SCREEN_HEIGHT; y++) {
-        for (int x = 0; x < SCREEN_WIDTH; x++) {
-            buffer[y][x] = 0;
-        }
-    }
+    // nettoyer le buffer
+    std::fill(buffer, buffer + (SCREEN_WIDTH * SCREEN_HEIGHT), 0);
 }
