@@ -1,6 +1,6 @@
 CXX := g++
 CXXFLAGS := -Wall -Iinclude -ISDL2/include -Igoogletest/googletest/include
-LIBS := -LSDL2/lib -lmingw32 -lSDL2main -lSDL2
+LIBS := -LSDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 # Add paths for Google Test libraries
 GTEST_LIBS := -Lgoogletest/build/lib -lgtest -lgtest_main -pthread
@@ -22,7 +22,7 @@ UNIT_TEST_TARGET := unit_tests
 
 .PHONY: all clean run build_run test
 
-all: $(TARGET)
+all: clean $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LIBS)

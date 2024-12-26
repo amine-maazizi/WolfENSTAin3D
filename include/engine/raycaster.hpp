@@ -18,18 +18,18 @@
 #include <engine/camera.hpp>
 #include <engine/constantes.hpp>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <cmath>
 #include <stdbool.h>
+#include <cassert>
 #include <vector>
 
 class Raycaster {
     private:
-        // Uint32 buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
-        // std::vector<int> texture[8];
-    // public:
-    //     Raycaster();
-    //     ~Raycaster();
-    //     void cast_rays(Camera&, int[][MAP_WIDTH]);
-    //     void render(SDL_Renderer*, SDL_Texture*);
+        Uint32** buffer;
+        std::vector<int> texture[8];
+    public:
+        Raycaster();
+        ~Raycaster();
+        void cast_rays(Camera&, int[MAP_HEIGHT][MAP_WIDTH]);
+        void render(SDL_Renderer*, SDL_Texture*);
 };

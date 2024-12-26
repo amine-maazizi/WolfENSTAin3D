@@ -6,6 +6,11 @@ Application::Application() {
         exit(1);
     }
 
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        printf("SDL Image n'a pas pu être intialiser, erreur : %s\n", IMG_GetError());
+        exit(1);
+    }
+
     this->window = SDL_CreateWindow("Raycasting", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (this->window == NULL) {
         printf("SDL n'a pas pu créer la fenêtre, erreur : %s\n", SDL_GetError());
@@ -62,21 +67,14 @@ void Application::handleInput() {
 
 void Application::process() {
     camera.move(worldMap);
-    // raycaster.cast_rays(this->camera, worldMap);
+    raycaster.cast_rays(this->camera, worldMap);
 }
 
 void Application::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 64, 96, 128, 255); 
-    SDL_Rect topHalf = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2};
-    SDL_RenderFillRect(renderer, &topHalf);
-    SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255); 
-    SDL_Rect bottomHalf = {0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2};
-    SDL_RenderFillRect(renderer, &bottomHalf);
-
-    // raycaster.render(this->renderer, this->buffTex);
+    raycaster.render(this->renderer, this->buffTex);
 
     SDL_RenderPresent(this->renderer);
 }
