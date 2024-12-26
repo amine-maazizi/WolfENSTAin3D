@@ -82,7 +82,7 @@ bool loadTextureFromPNG(const char* filename, std::vector<int>& textureVector) {
 
 Raycaster::Raycaster() {
     // Redimensionnement des tableaux de textures
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 7; i++) {
         texture[i].resize(TEX_WIDTH * TEX_HEIGHT);
     }
 
@@ -92,7 +92,7 @@ Raycaster::Raycaster() {
 
    
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 7; i++) {
         if (!loadTextureFromPNG(texPaths[i], texture[i])) {
             printf("Echec dans le chargmeent de la texture %d dont le chemin %s\n", i, texPaths[i]);
             IMG_Quit();
@@ -108,6 +108,56 @@ Raycaster::~Raycaster() {
 }
 
 void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
+    // FLOOR CASTING
+    for (int y = 0; y < SCREEN_HEIGHT; y++) {
+        Vector2D<float> rayDir0 =  static_cast<Vector2D<float>>(cam.direction) -  static_cast<Vector2D<float>>(cam.plane);
+        Vector2D<float> rayDir1 =  static_cast<Vector2D<float>>(cam.direction) + static_cast<Vector2D<float>>(cam.plane);
+
+        // on centre la coordonnée y
+        int p = y - SCREEN_HEIGHT / 2;
+
+        // position verticale de la camera
+        float posZ = 0.5f * SCREEN_HEIGHT;
+
+        if (p == 0) continue;
+
+        // distance horizontal entre camera et sol pour y
+        float rowDist = posZ / p;
+
+        // pas pour chaque x
+        Vector2D<float> floorStep = (rayDir1 - rayDir0) * rowDist * (1.0f / SCREEN_WIDTH);
+        Vector2D<float> floor = static_cast<Vector2D<float>>(cam.position) + rayDir0 * rowDist;
+
+
+        for (int x = 0; x < SCREEN_WIDTH; x++) {
+            Vector2D<int> cellCoord(
+                (int)floor.getX(),
+                (int)floor.getY()
+            );
+
+            Vector2D<int> texCoord(
+                (int)(TEX_WIDTH * (floor.getX() - cellCoord.getX())) & (TEX_WIDTH - 1),
+                (int)(TEX_HEIGHT * (floor.getY() - cellCoord.getY())) & (TEX_HEIGHT - 1)
+            );
+
+            floor = floor + floorStep;
+
+            int floorTex = 5;
+            int ceilTex = 6;
+
+            // sol
+            Uint32 color = texture[floorTex][TEX_WIDTH * texCoord.getY() + texCoord.getX()];
+            color = (color >> 1) & 8355711; // ombre
+            buffer[y * SCREEN_WIDTH + x] = color;
+
+            // ceilling
+            color = texture[ceilTex][TEX_WIDTH * texCoord.getY() + texCoord.getX()];
+            color = (color >> 1) & 8355711; // ombre
+            buffer[(SCREEN_HEIGHT - y - 1) * SCREEN_WIDTH + x] = color;
+        }
+    }
+
+
     // Parcourir chaque colonne verticale de l'écran
     for (int x = 0; x < SCREEN_WIDTH; x++) {
         // Calcul de la direction du rayon en x

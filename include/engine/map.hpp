@@ -17,4 +17,4 @@
 #include <engine/constantes.hpp>
 
 extern int worldMap[MAP_WIDTH][MAP_HEIGHT];
-extern const char* texPaths[5];
+extern const char* texPaths[7];

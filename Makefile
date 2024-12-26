@@ -1,6 +1,6 @@
 CXX := g++
 CXXFLAGS := -Wall -Iinclude -ISDL2/include -Igoogletest/googletest/include
-LIBS := -LSDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+LIBS := -LSDL2/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
 # Add paths for Google Test libraries
 GTEST_LIBS := -Lgoogletest/build/lib -lgtest -lgtest_main -pthread

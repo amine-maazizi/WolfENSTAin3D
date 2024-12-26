@@ -14,7 +14,11 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
+
 #include <engine/camera.hpp>
 #include <engine/constantes.hpp>
 #include <engine/raycaster.hpp>
@@ -22,17 +26,24 @@
 
 class Application {
     private:
+        // Essentielle SDL2
         SDL_Renderer* renderer;
         SDL_Window* window;
+
+        // Mon engin de raycasting
         Camera camera;
         SDL_Texture* buffTex;
         Raycaster raycaster;
+
+        // Affichage du text
+        TTF_Font* font;
+        SDL_Surface* gui;
     public:
         Application();
         ~Application();
 
         void handleInput();
         void process();
-        void render();
+        void render(float);
         void run();
 };

@@ -27,10 +27,12 @@ int worldMap[MAP_WIDTH][MAP_HEIGHT] =
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
-const char* texPaths[5] = {
+const char* texPaths[7] = {
     "assets/redbrick.png",
-    "assets/greystone.png",
-    "assets/wood.png",
+    "assets/bluestone.png",
+    "assets/purplestone.png",
     "assets/ensta.png",
     "assets/ip.png",
+    "assets/greystone.png",
+    "assets/wood.png",
 };

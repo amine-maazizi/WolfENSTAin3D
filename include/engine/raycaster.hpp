@@ -29,7 +29,7 @@
 class Raycaster {
     private:
         Uint32* buffer;
-        std::vector<int> texture[8];
+        std::vector<int> texture[7]; // TODO: usage d'une macro pour le nombre de textures
     public:
         Raycaster();
         ~Raycaster();
