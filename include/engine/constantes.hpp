@@ -12,10 +12,17 @@
 
 #pragma once
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
+#define DISPLAY_WIDTH 1280
+#define DISPLAY_HEIGHT 640
+
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 320
+
+#define TEXTURE_NUMBER 7
 #define TEX_WIDTH 64
 #define TEX_HEIGHT 64
+
 #define MAP_WIDTH 24
 #define MAP_HEIGHT 24
 
+#define BASE_MOVE_SPEED 0.05

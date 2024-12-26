@@ -17,7 +17,7 @@ Application::Application() {
         exit(1);
     }
 
-    this->window = SDL_CreateWindow("Raycasting", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    this->window = SDL_CreateWindow("Raycasting", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, DISPLAY_WIDTH, DISPLAY_HEIGHT, SDL_WINDOW_SHOWN);
     if (this->window == NULL) {
         printf("SDL n'a pas pu créer la fenêtre, erreur : %s\n", SDL_GetError());
         exit(1);
@@ -73,6 +73,10 @@ void Application::handleInput() {
         switch (event.type) {
             case SDL_QUIT:
                 exit(0);
+                break;
+            case SDL_KEYDOWN:
+                if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+                    exit(0);
                 break;
             default:
                 break;

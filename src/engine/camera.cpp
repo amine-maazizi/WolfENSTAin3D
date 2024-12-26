@@ -12,7 +12,7 @@ Camera::Camera()
 void Camera::move(int worldMap[MAP_HEIGHT][MAP_WIDTH]) {
      const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-    if (keystate[SDL_SCANCODE_W]) {
+    if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) {
         Vector2D<double> nextPosition = position + direction * moveSpeed;
         if (worldMap[int(nextPosition.getX())][int(position.getY())] == 0) {
             position.setX(nextPosition.getX());
@@ -22,7 +22,7 @@ void Camera::move(int worldMap[MAP_HEIGHT][MAP_WIDTH]) {
         }
     }
 
-    if (keystate[SDL_SCANCODE_S]) {
+    if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) {
         Vector2D<double> nextPosition = position - direction * moveSpeed;
         if (worldMap[int(nextPosition.getX())][int(position.getY())] == 0) {
             position.setX(nextPosition.getX());
@@ -32,8 +32,7 @@ void Camera::move(int worldMap[MAP_HEIGHT][MAP_WIDTH]) {
         }
     }
 
-    // TODO: employer une matrice de rotation pour cela (glm ?)
-    if (keystate[SDL_SCANCODE_D]) {
+    if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) {
         double cosRot = cos(-rotSpeed);
         double sinRot = sin(-rotSpeed);
 
@@ -48,7 +47,7 @@ void Camera::move(int worldMap[MAP_HEIGHT][MAP_WIDTH]) {
         plane.setY(newPlaneY);
     }
 
-    if (keystate[SDL_SCANCODE_A]) {
+    if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) {
         double cosRot = cos(rotSpeed);
         double sinRot = sin(rotSpeed);
 
@@ -61,5 +60,12 @@ void Camera::move(int worldMap[MAP_HEIGHT][MAP_WIDTH]) {
         double newPlaneY = plane.getX() * sinRot + plane.getY() * cosRot;
         plane.setX(newPlaneX);
         plane.setY(newPlaneY);
+    }
+
+    // Sprinting
+    if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_SPACE]) {
+        moveSpeed = BASE_MOVE_SPEED * 2.0; // Increase movement speed for sprinting
+    } else {
+        moveSpeed = BASE_MOVE_SPEED; // Reset to normal speed when not sprinting
     }
 }
