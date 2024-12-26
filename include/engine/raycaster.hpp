@@ -17,7 +17,10 @@
 
 #include <engine/camera.hpp>
 #include <engine/constantes.hpp>
+#include <engine/map.hpp>
+
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <cmath>
 #include <stdbool.h>
 #include <cassert>

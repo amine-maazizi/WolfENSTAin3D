@@ -1,8 +1,88 @@
 #include <engine/raycaster.hpp>
 
+
+SDL_Surface* ConvertImageToRGBA32(SDL_Surface* surface, const char* filename) {
+    switch (surface->format->format) {
+        case SDL_PIXELFORMAT_RGB24: {
+            printf("Conversion de %s de RGB24 vers ARGB8888\n", filename);
+            SDL_Surface* converted = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_ARGB8888, 0);
+            if (!converted) {
+                printf("Erreur : Impossible de convertir %s : %s\n", filename, SDL_GetError());
+                return nullptr;
+            }
+            SDL_FreeSurface(surface);
+            surface = converted;
+            break;
+        }
+
+        case SDL_PIXELFORMAT_ABGR8888: {
+            printf("Traitement de %s avec ABGR8888 pour correspondre a RGBA8888\n", filename);
+            uint32_t* pixels = static_cast<uint32_t*>(surface->pixels);
+            int pixelCount = surface->w * surface->h;
+
+            for (int i = 0; i < pixelCount; ++i) {
+                uint8_t* color = reinterpret_cast<uint8_t*>(&pixels[i]);
+                uint8_t temp = color[0];
+                color[0] = color[2];
+                color[2] = temp;
+            }
+            break;
+        }
+
+        default: {
+            printf("Conversion de %s de %s vers RGBA32\n", filename, SDL_GetPixelFormatName(surface->format->format));
+            SDL_Surface* converted = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA8888, 0);
+            if (!converted) {
+                printf("Erreur : Impossible de convertir %s : %s\n", filename, SDL_GetError());
+                return nullptr;
+            }
+            SDL_FreeSurface(surface);
+            surface = converted;
+            break;
+        }
+    }
+
+    return surface;
+}
+
+
+// charge un PNG et transfers ses pixels au vecteur de textures
+bool loadTextureFromPNG(const char* filename, std::vector<int>& textureVector) {
+    SDL_Surface* surface = IMG_Load(filename);
+    if (!surface) {
+        printf("Echec de chargement de l'image, erreur: %s\n", IMG_GetError());
+        return false;
+    }
+
+    if (surface->w != TEX_WIDTH || surface->h != TEX_HEIGHT) {
+        printf("Dimensions de l'image dans le chemin %s ne sont pas 64x64\n", filename);
+        SDL_FreeSurface(surface);
+        return false;
+    }
+
+    // Convert image format
+    SDL_Surface* convertedSurface = ConvertImageToRGBA32(surface, filename);
+    if (!convertedSurface) {
+        SDL_FreeSurface(surface);
+        return false;
+    }
+    surface = convertedSurface;
+
+    textureVector.clear();
+    textureVector.reserve(TEX_WIDTH * TEX_HEIGHT);
+
+    uint32_t* pixels = static_cast<uint32_t*>(surface->pixels);
+    for (int i = 0; i < TEX_WIDTH * TEX_HEIGHT; ++i) {
+        textureVector.push_back(static_cast<int>(pixels[i]));
+    }
+
+    SDL_FreeSurface(surface);
+    return true;
+}
+
 Raycaster::Raycaster() {
     // Redimensionnement des tableaux de textures
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 5; i++) {
         texture[i].resize(TEX_WIDTH * TEX_HEIGHT);
     }
 
@@ -10,21 +90,14 @@ Raycaster::Raycaster() {
     buffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT]; // Contiguous memory allocation
     std::fill(buffer, buffer + (SCREEN_WIDTH * SCREEN_HEIGHT), 0); 
 
-    // Génération de textures selon des motifs
-    for (int x = 0; x < TEX_WIDTH; x++) {
-        for (int y = 0; y < TEX_HEIGHT; y++) {
-            int xorcolor = (x * 256 / TEX_WIDTH) ^ (y * 256 / TEX_HEIGHT);
-            int ycolor = y * 256 / TEX_HEIGHT;
-            int xycolor = y * 128 / TEX_HEIGHT + x * 128 / TEX_WIDTH;
+   
 
-            texture[0][TEX_WIDTH * y + x] = 65536 * 254 * (x != y && x != TEX_WIDTH - y); // Texture rouge unie avec croix noire
-            texture[1][TEX_WIDTH * y + x] = xycolor + 256 * xycolor + 65536 * xycolor;    // Dégradé en nuances de gris
-            texture[2][TEX_WIDTH * y + x] = 256 * xycolor + 65536 * xycolor;             // Dégradé jaune incliné
-            texture[3][TEX_WIDTH * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor; // Dégradé XOR en nuances de gris
-            texture[4][TEX_WIDTH * y + x] = 256 * xorcolor;                              // Texture verte XOR
-            texture[5][TEX_WIDTH * y + x] = 65536 * 192 * (x % 16 && y % 16);            // Texture de briques rouges
-            texture[6][TEX_WIDTH * y + x] = 65536 * ycolor;                              // Dégradé rouge
-            texture[7][TEX_WIDTH * y + x] = 128 + 256 * 128 + 65536 * 128;               // Texture grise unie
+    for (int i = 0; i < 5; i++) {
+        if (!loadTextureFromPNG(texPaths[i], texture[i])) {
+            printf("Echec dans le chargmeent de la texture %d dont le chemin %s\n", i, texPaths[i]);
+            IMG_Quit();
+            SDL_Quit();
+            exit(1);
         }
     }
 }
@@ -150,3 +223,5 @@ void Raycaster::render(SDL_Renderer* renderer, SDL_Texture* bufferTex) {
     // nettoyer le buffer
     std::fill(buffer, buffer + (SCREEN_WIDTH * SCREEN_HEIGHT), 0);
 }
+
+

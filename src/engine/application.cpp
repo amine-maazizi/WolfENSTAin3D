@@ -44,6 +44,7 @@ Application::~Application() {
     SDL_DestroyTexture(this->buffTex);
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
+    IMG_Quit();
     SDL_Quit();
 
 }
