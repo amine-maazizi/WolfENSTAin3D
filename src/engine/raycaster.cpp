@@ -25,7 +25,7 @@ SDL_Surface* ConvertImageToRGBA32(SDL_Surface* surface, const char* filename) {
                 uint8_t temp = color[0];
                 color[0] = color[2];
                 color[2] = temp;
-            }
+                }
             break;
         }
 
@@ -82,7 +82,7 @@ bool loadTextureFromPNG(const char* filename, std::vector<int>& textureVector) {
 
 Raycaster::Raycaster() {
     // Redimensionnement des tableaux de textures
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < TEXTURE_NUMBER; i++) {
         texture[i].resize(TEX_WIDTH * TEX_HEIGHT);
     }
 
@@ -92,7 +92,7 @@ Raycaster::Raycaster() {
 
    
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < TEXTURE_NUMBER; i++) {
         if (!loadTextureFromPNG(texPaths[i], texture[i])) {
             printf("Echec dans le chargmeent de la texture %d dont le chemin %s\n", i, texPaths[i]);
             IMG_Quit();
@@ -261,9 +261,12 @@ void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
             Uint32 color = texture[texNum][TEX_HEIGHT * texY + texX];
             if (!wasHorizontal) color = (color >> 1) & 8355711; // Assombrir pour les ombres
             buffer[y * SCREEN_WIDTH + x] = color;
+            bbManager.ZBuffer.push_back(perpWallDist);
             }
-
     }
+
+    // BILLBOARD CASTING
+
 }
 
 void Raycaster::render(SDL_Renderer* renderer, SDL_Texture* bufferTex) {

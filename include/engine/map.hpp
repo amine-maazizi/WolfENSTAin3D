@@ -15,6 +15,7 @@
 #pragma once
 
 #include <engine/constantes.hpp>
+#include <engine/billboard.Hpp>
+#include <vector>
 
 extern int worldMap[MAP_WIDTH][MAP_HEIGHT];
-extern const char* texPaths[7];

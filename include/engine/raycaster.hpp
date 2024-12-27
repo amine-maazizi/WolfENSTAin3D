@@ -18,6 +18,7 @@
 #include <engine/camera.hpp>
 #include <engine/constantes.hpp>
 #include <engine/map.hpp>
+#include <engine/billboard_manager.hpp>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -28,8 +29,12 @@
 
 class Raycaster {
     private:
+        // Map, Floor, Ceilling
         Uint32* buffer;
-        std::vector<int> texture[7]; // TODO: usage d'une macro pour le nombre de textures
+        std::vector<int> texture[TEXTURE_NUMBER];
+
+        // Billboards
+        BillboardManager bbManager;
     public:
         Raycaster();
         ~Raycaster();
