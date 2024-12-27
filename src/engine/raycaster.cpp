@@ -300,7 +300,21 @@ void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
 
         // insertion dans le buffer
         for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
-            
+            // int texX = (int)((stripe - (-bbWidth / 2 + bbScreenX)) * TEX_WIDTH / bbWidth) / 256;
+            int texX = (stripe - (-bbWidth / 2 + bbScreenX)) * TEX_WIDTH / bbWidth;
+
+
+            // On va stocker le sprite dans le buffer du rendering si et seulement si
+            // il est devant la  camera
+            // il est sur l'écran 
+            // Zbuffer + perp Dist
+            if (transform.getY() > 0 && stripe > 0 && stripe < SCREEN_WIDTH && transform.getY() < bbManager.ZBuffer[stripe])
+            for (int y = drawStartY; y < drawEndY; y++) { // pour tous pixel dans le stripe 
+                int d = y * 256 - SCREEN_HEIGHT * 128 + bbHeight * 128; // les facteurs sont pour eviter floats
+                int texY = (d * TEX_HEIGHT) / (bbHeight * 256);
+                Uint32 color = texture[bbManager.billboards[bbManager.billboardOrder[i]].texID][TEX_WIDTH * texY + texX];
+                if ((color & 0xFF000000) != 0) buffer[y * SCREEN_WIDTH + stripe] = color; // On verifiy si le pixel n'est pas noir
+            }
         }
     }
 }

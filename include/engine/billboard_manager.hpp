@@ -17,7 +17,7 @@
 #include <engine/billboard.hpp>
 #include <engine/camera.hpp>
 #include <vector>
-
+#include <algorithm>
 
 
 class BillboardManager {

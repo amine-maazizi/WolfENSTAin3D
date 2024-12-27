@@ -11,7 +11,7 @@ BillboardManager::BillboardManager(Camera& cam) {
     for (int i=0; i < number; i++) {
         billboardOrder.push_back(i);
         billboardDistance.push_back(
-           (cam.position - billboards[i].position).getLength()
+           (cam.position - billboards[i].position).length()
         );
     }
 
@@ -19,5 +19,18 @@ BillboardManager::BillboardManager(Camera& cam) {
 }
 
 void BillboardManager::sortBillboards() {
-    // TO BE WRITTEN
-}
+    std::vector<std::pair<double, int>> bbs(number);
+    for (int i = 0; i < number; i++) {
+        bbs[i].first = billboardDistance[i];
+        bbs[i].second = billboardOrder[i];
+    }
+
+    // Fonction de sort de la standarb lib
+    std::sort(bbs.begin(), bbs.end());
+
+    // restaurer l'ordre inverse : plus loins -> plus proche
+    for (int i = 0; i < number; i++) {
+        billboardDistance[i] = bbs[number - i - 1].first;
+        billboardOrder[i] = bbs[number - i - 1].second;
+    }
+} 

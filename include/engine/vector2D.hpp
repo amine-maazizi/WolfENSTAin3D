@@ -26,12 +26,11 @@ class Vector2D {
 private:
     T x;
     T y;
-    double length;
 
 public:
     // Constructors
-    Vector2D() : x(0), y(0), length(0.0) {}
-    Vector2D(T x, T y) : x(x), y(y), length(sqrt(x*x + y*y)) {}
+    Vector2D() : x(0), y(0) {}
+    Vector2D(T x, T y) : x(x), y(y) {}
 
     template <typename U>
     Vector2D(const Vector2D<U>& other) : x(static_cast<T>(other.getX())), y(static_cast<T>(other.getY())) {}
@@ -39,10 +38,9 @@ public:
     // Accessors
     T getX() const { return x; }
     T getY() const { return y; }
-    double getLength() const { return length; }
 
-    void setX(T xVal) { x = xVal; length = sqrt(x*x + y*y);}
-    void setY(T yVal) { y = yVal; length = sqrt(x*x + y*y);}
+    void setX(T xVal) { x = xVal; }
+    void setY(T yVal) { y = yVal; }
 
     // Casting Functions
     template <typename U>
