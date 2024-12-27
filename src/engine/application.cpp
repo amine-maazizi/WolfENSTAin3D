@@ -1,6 +1,6 @@
 #include <engine/application.hpp>
 
-Application::Application() {
+Application::Application() : raycaster(Raycaster(camera)) {
     // TODO: ajouter SQL_Quit() a toute les init
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL n'a pas pu être intialiser, erreur : %s\n", SDL_GetError());

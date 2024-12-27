@@ -80,7 +80,7 @@ bool loadTextureFromPNG(const char* filename, std::vector<int>& textureVector) {
     return true;
 }
 
-Raycaster::Raycaster() {
+Raycaster::Raycaster(Camera& cam) : bbManager(BillboardManager(cam)) {
     // Redimensionnement des tableaux de textures
     for (int i = 0; i < TEXTURE_NUMBER; i++) {
         texture[i].resize(TEX_WIDTH * TEX_HEIGHT);
@@ -266,7 +266,43 @@ void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
     }
 
     // BILLBOARD CASTING
+    for (int i = 0; i < bbManager.number; i++) {
+        // position relative du billboard
+        Vector2D<double> relPos = bbManager.billboards[i].position - cam.position;
 
+        // Transformer le billboard avec l'inverse de la transformation de la camera
+        // TODO: usage d'une matrice de transformation est beacoup mieux ici
+        // TODO: penser soit ajouter GLM soit definire ma propre class Matrice 2x2 vue que je travaille en 2D
+        double invDet = 1.0 / (cam.plane.getX() * cam.direction.getY() - cam.direction.getX() * cam.plane.getY());
+
+        Vector2D<double> transform = Vector2D<double>(
+            cam.direction.getY() * relPos.getX() - cam.direction.getX() * relPos.getY(),
+            - cam.plane.getY() * relPos.getX() + cam.plane.getX() * relPos.getY()
+        ) * invDet;
+
+        int bbScreenX = (int)(SCREEN_WIDTH / 2 * (1 + transform.getX() / transform.getY()));
+
+        // Hauteur du billboard par rapport à l'écran
+        int bbHeight = abs((int)(SCREEN_HEIGHT / transform.getY())); // auteur transformée au lieu de la dist reél pour eviter l'effet 'Fisheye'
+
+        // Repratition verticale du sprite
+        int drawStartY = -bbHeight / 2 + SCREEN_HEIGHT / 2;
+        if (drawStartY < 0) drawStartY = 0;
+        int drawEndY = bbHeight / 2 + SCREEN_HEIGHT / 2;
+        if (drawEndY >= SCREEN_HEIGHT) drawEndY = SCREEN_HEIGHT - 1;
+        
+        // Epaisseur horizontal
+        int bbWidth = abs((int)(SCREEN_HEIGHT / transform.getY()));
+        int drawStartX = - bbWidth / 2 + bbScreenX;
+        if (drawStartX < 0) drawStartX = 0;
+        int drawEndX = bbWidth / 2 + bbScreenX;
+        if (drawEndX >= SCREEN_WIDTH) drawEndX = SCREEN_WIDTH - 1;
+
+        // insertion dans le buffer
+        for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
+            
+        }
+    }
 }
 
 void Raycaster::render(SDL_Renderer* renderer, SDL_Texture* bufferTex) {
