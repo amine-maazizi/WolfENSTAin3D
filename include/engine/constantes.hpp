@@ -18,7 +18,7 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 320
 
-#define TEXTURE_NUMBER 8
+#define TEXTURE_NUMBER  10
 #define TEX_WIDTH 64
 #define TEX_HEIGHT 64
 

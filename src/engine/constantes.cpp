@@ -8,5 +8,7 @@ const char* texPaths[TEXTURE_NUMBER] = {
     "assets/ip.png",
     "assets/greystone.png",
     "assets/wood.png",
-    "assets/chapou.png"
+    "assets/chapou.png",
+    "assets/lhuillier.png",
+    "assets/crepon.png",
 };
