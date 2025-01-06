@@ -5,10 +5,10 @@ BillboardManager::BillboardManager(Camera& cam) {
     billboards.push_back(Billboard(18.5, 10.5, 7));
     billboards.push_back(Billboard(18.5, 11.5, 7));
     billboards.push_back(Billboard(18.5, 12.5, 7));
-    billboards.push_back(Billboard(10.5, 12.5, 8));
-    billboards.push_back(Billboard(10.5, 10.5, 8));
-    billboards.push_back(Billboard(15.5, 12.5, 9));
-    billboards.push_back(Billboard(15.5, 10.5, 9));
+    billboards.push_back(Billboard(21.5, 1.5, 8));
+    billboards.push_back(Billboard(15.5, 1.5, 8));
+    billboards.push_back(Billboard(10.0, 15.1, 9));
+    billboards.push_back(Billboard(10.5, 15.8, 9));
 
     number = billboards.size();
 

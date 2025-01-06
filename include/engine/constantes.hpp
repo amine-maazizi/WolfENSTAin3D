@@ -12,8 +12,9 @@
 
 #pragma once
 
-#define DISPLAY_WIDTH 1280
-#define DISPLAY_HEIGHT 640
+// TODO: changer sa à un scaling factor pour rendre le tous globale
+#define DISPLAY_WIDTH 640
+#define DISPLAY_HEIGHT 320
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 320

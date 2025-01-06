@@ -116,6 +116,8 @@ void Application::render(float fps) {
 
     SDL_RenderCopy(renderer, gui, NULL, &gui_rect);
 
+    Minimap::render(this->renderer, this->camera, worldMap);
+
     // TODO: pas optimale
     SDL_FreeSurface(fpsText);
     SDL_DestroyTexture(gui);

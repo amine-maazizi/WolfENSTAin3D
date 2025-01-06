@@ -313,7 +313,7 @@ void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
                 int d = y * 256 - SCREEN_HEIGHT * 128 + bbHeight * 128; // les facteurs sont pour eviter floats
                 int texY = (d * TEX_HEIGHT) / (bbHeight * 256);
                 Uint32 color = texture[bbManager.billboards[bbManager.billboardOrder[i]].texID][TEX_WIDTH * texY + texX];
-                if ((color & 0xFF000000) != 0) buffer[y * SCREEN_WIDTH + stripe] = color; // On verifiy si le pixel n'est pas noir
+                if ((color & 0xFF000000) != 0) buffer[y * SCREEN_WIDTH + stripe] = color;
             }
         }
     }

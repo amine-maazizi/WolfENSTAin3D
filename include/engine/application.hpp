@@ -23,6 +23,7 @@
 #include <engine/constantes.hpp>
 #include <engine/raycaster.hpp>
 #include <engine/map.hpp>
+#include <engine/minimap.hpp>
 
 class Application {
     private:
