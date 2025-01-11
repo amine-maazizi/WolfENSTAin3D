@@ -17,7 +17,10 @@ Application::Application() : raycaster(Raycaster(camera)) {
         exit(1);
     }
 
-    this->window = SDL_CreateWindow("Raycasting", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, DISPLAY_WIDTH, DISPLAY_HEIGHT, SDL_WINDOW_SHOWN);
+    this->window = SDL_CreateWindow("Raycasting", 
+                            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+                            SCALING_FACTOR * SCREEN_WIDTH, SCALING_FACTOR * SCREEN_HEIGHT, 
+                            SDL_WINDOW_SHOWN);
     if (this->window == NULL) {
         printf("SDL n'a pas pu créer la fenêtre, erreur : %s\n", SDL_GetError());
         exit(1);
@@ -45,7 +48,7 @@ Application::Application() : raycaster(Raycaster(camera)) {
         exit(1);
     }
 
-    font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 24);
+    font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 12);
     if (font == NULL) {
         printf("SDL n'a pas pu créer le font, erreur: %s\n", SDL_GetError());
         SDL_DestroyTexture(buffTex);
@@ -111,8 +114,8 @@ void Application::render(float fps) {
     SDL_Rect gui_rect;
     gui_rect.x = 0;  
     gui_rect.y = 0; 
-    gui_rect.w = 256; 
-    gui_rect.h = 64; 
+    gui_rect.w = 128 * SCALING_FACTOR; 
+    gui_rect.h = 32 * SCALING_FACTOR; 
 
     SDL_RenderCopy(renderer, gui, NULL, &gui_rect);
 
