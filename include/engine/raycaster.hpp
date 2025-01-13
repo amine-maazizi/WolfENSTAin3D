@@ -32,12 +32,9 @@ class Raycaster {
         // Map, Floor, Ceilling
         Uint32* buffer;
         std::vector<int> texture[TEXTURE_NUMBER];
-
-        // Billboards
-        BillboardManager bbManager;
     public:
         Raycaster(Camera&);
         ~Raycaster();
-        void cast_rays(Camera&, int[MAP_HEIGHT][MAP_WIDTH]); // TODO: vue que j'ai passer la camera dans le constructeur pas besoin de la redefinir commme arg de func
+        void cast_rays(Camera&, int[MAP_HEIGHT][MAP_WIDTH], BillboardManager&); // TODO: vue que j'ai passer la camera dans le constructeur pas besoin de la redefinir commme arg de func
         void render(SDL_Renderer*, SDL_Texture*);
 };

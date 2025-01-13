@@ -80,7 +80,7 @@ bool loadTextureFromPNG(const char* filename, std::vector<int>& textureVector) {
     return true;
 }
 
-Raycaster::Raycaster(Camera& cam) : bbManager(BillboardManager(cam)) {
+Raycaster::Raycaster(Camera& cam) {
     // Redimensionnement des tableaux de textures
     for (int i = 0; i < TEXTURE_NUMBER; i++) {
         texture[i].resize(TEX_WIDTH * TEX_HEIGHT);
@@ -107,7 +107,7 @@ Raycaster::~Raycaster() {
     delete[] buffer;
 }
 
-void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
+void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH], BillboardManager& bbManager) {
     // FLOOR CASTING
     for (int y = 0; y < SCREEN_HEIGHT; y++) {
         Vector2D<float> rayDir0 =  static_cast<Vector2D<float>>(cam.direction) -  static_cast<Vector2D<float>>(cam.plane);
@@ -268,7 +268,7 @@ void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
     // BILLBOARD CASTING
     for (int i = 0; i < bbManager.number; i++) {
         // position relative du billboard
-        Vector2D<double> relPos = bbManager.billboards[i].position - cam.position;
+        Vector2D<double> relPos = bbManager.billboards[i]->position - cam.position;
 
         // Transformer le billboard avec l'inverse de la transformation de la camera
         // TODO: usage d'une matrice de transformation est beacoup mieux ici
@@ -312,7 +312,7 @@ void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH]) {
             for (int y = drawStartY; y < drawEndY; y++) { // pour tous pixel dans le stripe 
                 int d = y * 256 - SCREEN_HEIGHT * 128 + bbHeight * 128; // les facteurs sont pour eviter floats
                 int texY = (d * TEX_HEIGHT) / (bbHeight * 256);
-                Uint32 color = texture[bbManager.billboards[bbManager.billboardOrder[i]].texID][TEX_WIDTH * texY + texX];
+                Uint32 color = texture[bbManager.billboards[bbManager.billboardOrder[i]]->texID][TEX_WIDTH * texY + texX];
                 if ((color & 0xFF000000) != 0) buffer[y * SCREEN_WIDTH + stripe] = color;
             }
         }

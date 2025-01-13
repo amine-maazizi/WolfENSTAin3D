@@ -15,17 +15,21 @@
 #pragma once
 
 #include <engine/billboard.hpp>
+#include <engine/enemy.hpp>
 #include <engine/camera.hpp>
 #include <vector>
-#include <algorithm>
-
+#include <memory>  // For smart pointers
 
 class BillboardManager {
     public:
         BillboardManager(Camera&);
         void sortBillboards();
+        void appendBillboards(std::vector<Billboard*>, Camera&);
+        void processEnemies(Camera&, int[MAP_WIDTH][MAP_HEIGHT]);
+
         int number;
-        std::vector<Billboard> billboards;
+        std::vector<std::unique_ptr<Billboard>> billboards;  // Store smart pointers to billboards
+        std::vector<Enemy> enemies;
         std::vector<int> billboardOrder;
         std::vector<double> billboardDistance;
         std::vector<double> ZBuffer;

@@ -1,6 +1,6 @@
 #include <engine/application.hpp>
 
-Application::Application() : raycaster(Raycaster(camera)) {
+Application::Application() : raycaster(Raycaster(camera)), bbManager(BillboardManager(camera)) {
     // TODO: ajouter SQL_Quit() a toute les init
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL n'a pas pu être intialiser, erreur : %s\n", SDL_GetError());
@@ -91,7 +91,8 @@ void Application::handleInput() {
 
 void Application::process() {
     camera.move(worldMap);
-    raycaster.cast_rays(this->camera, worldMap);
+    bbManager.processEnemies(this->camera, worldMap);
+    raycaster.cast_rays(this->camera, worldMap, bbManager);
 }
 
 void Application::render(float fps) {

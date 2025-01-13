@@ -1,27 +1,29 @@
 #include <engine/billboard_manager.hpp>
 
+// Constructor: Use unique_ptr to store billboards and link them with enemies
 BillboardManager::BillboardManager(Camera& cam) {
-    // id 7 --> chapoutout 
-    billboards.push_back(Billboard(18.5, 10.5, 7));
-    billboards.push_back(Billboard(18.5, 11.5, 7));
-    billboards.push_back(Billboard(18.5, 12.5, 7));
-    billboards.push_back(Billboard(21.5, 1.5, 8));
-    billboards.push_back(Billboard(15.5, 1.5, 8));
-    billboards.push_back(Billboard(10.0, 15.1, 9));
-    billboards.push_back(Billboard(10.5, 15.8, 9));
+    // Initializing some billboards and enemies
+    billboards.push_back(std::make_unique<Billboard>(18.5, 10.5, 7));
+    enemies.push_back(Enemy(18.5, 11.5, 7));
+
+    // Link enemies to billboards (optional: if you want a separate billboard for each enemy)
+    for (auto& e : enemies) {
+        billboards.push_back(std::make_unique<Billboard>(e.position, e.texID)); // Creating new billboards for each enemy
+    }
 
     number = billboards.size();
 
-    for (int i=0; i < number; i++) {
+    for (int i = 0; i < number; i++) {
         billboardOrder.push_back(i);
         billboardDistance.push_back(
-           (cam.position - billboards[i].position).length()
+           (cam.position - billboards[i]->position).length()
         );
     }
 
     sortBillboards();
 }
 
+// Sorting function (sorting based on the distance to the camera)
 void BillboardManager::sortBillboards() {
     std::vector<std::pair<double, int>> bbs(number);
     for (int i = 0; i < number; i++) {
@@ -29,12 +31,48 @@ void BillboardManager::sortBillboards() {
         bbs[i].second = billboardOrder[i];
     }
 
-    // Fonction de sort de la standarb lib
     std::sort(bbs.begin(), bbs.end());
 
-    // restaurer l'ordre inverse : plus loins -> plus proche
     for (int i = 0; i < number; i++) {
         billboardDistance[i] = bbs[number - i - 1].first;
         billboardOrder[i] = bbs[number - i - 1].second;
     }
-} 
+}
+
+// Append new billboards
+void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam) {
+    for (auto* bb : bbs) {
+        billboards.push_back(std::make_unique<Billboard>(*bb));  // Creating unique_ptr for each new billboard
+    }
+
+    int start = number - 1;
+    number += bbs.size();
+
+    for (int i = start; i < number; i++) {
+        billboardOrder.push_back(i);
+        billboardDistance.push_back(
+           (cam.position - billboards[i]->position).length()
+        );
+    }
+
+    sortBillboards();
+}
+
+// Process enemy movements and update corresponding billboard positions
+void BillboardManager::processEnemies(Camera& cam, int map[MAP_WIDTH][MAP_HEIGHT]) {
+    for (auto& e : enemies) {
+        e.moveEnemy(cam, map);
+
+        // Update the position of the corresponding billboard for each enemy
+        // Assuming the billboard corresponds to the enemy's position
+        for (auto& bb : billboards) {
+            if (bb->texID == e.texID) {
+                bb->position = e.position;
+                break;  // Assuming one billboard per enemy
+            }
+        }
+    }
+
+    // After each frame, sort billboards based on their new positions
+    sortBillboards();
+}

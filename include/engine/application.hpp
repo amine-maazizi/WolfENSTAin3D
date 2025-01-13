@@ -18,10 +18,12 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <vector>
 
 #include <engine/camera.hpp>
 #include <engine/constantes.hpp>
 #include <engine/raycaster.hpp>
+#include <engine/billboard_manager.hpp>
 #include <engine/map.hpp>
 #include <engine/minimap.hpp>
 
@@ -35,6 +37,7 @@ class Application {
         Camera camera;
         SDL_Texture* buffTex;
         Raycaster raycaster;
+        BillboardManager bbManager;
 
         // Affichage du text
         TTF_Font* font;
