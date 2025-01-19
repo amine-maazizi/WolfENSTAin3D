@@ -6,7 +6,7 @@ Camera::Camera()
       direction(-1, 0),         
       plane(0, 0.66),               
       moveSpeed(0.05),              
-      rotSpeed(0.03) {} 
+      rotSpeed(0.04) {} 
 
 
 void Camera::move(int worldMap[MAP_HEIGHT][MAP_WIDTH]) {

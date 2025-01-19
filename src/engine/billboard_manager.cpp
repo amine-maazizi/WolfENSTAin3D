@@ -4,7 +4,7 @@
 BillboardManager::BillboardManager(Camera& cam) {
     // Initializing some billboards and enemies
     billboards.push_back(std::make_unique<Billboard>(18.5, 10.5, 7));
-    enemies.push_back(Enemy(18.5, 11.5, 7));
+    enemies.push_back(Enemy(18.5, 15.5, 7));
 
     // Link enemies to billboards (optional: if you want a separate billboard for each enemy)
     for (auto& e : enemies) {
@@ -59,9 +59,9 @@ void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam
 }
 
 // Process enemy movements and update corresponding billboard positions
-void BillboardManager::processEnemies(Camera& cam, int map[MAP_WIDTH][MAP_HEIGHT]) {
+void BillboardManager::processEnemies(Camera& cam, int map[MAP_WIDTH][MAP_HEIGHT], Effects& fx) {
     for (auto& e : enemies) {
-        e.moveEnemy(cam, map);
+        e.moveEnemy(cam, map, fx);
 
         // Update the position of the corresponding billboard for each enemy
         // Assuming the billboard corresponds to the enemy's position

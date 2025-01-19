@@ -15,9 +15,12 @@
 #include <SDL2/SDL.h>
 #include <engine/camera.hpp>
 #include <engine/constantes.hpp>
+#include <engine/enemy.hpp>
+#include <vector>
+
 
 class Minimap {
     public:
         Minimap() = delete;
-        static void render(SDL_Renderer*, Camera&, int[MAP_HEIGHT][MAP_WIDTH]);
+        static void render(SDL_Renderer*, Camera&, std::vector<Enemy>&, int[MAP_HEIGHT][MAP_WIDTH]);
 };

@@ -17,13 +17,15 @@
 #include <engine/billboard.hpp>
 #include <engine/constantes.hpp>
 #include <engine/camera.hpp>
+#include <engine/effects.hpp>
 #include <engine/a_star.hpp>
 
 class Enemy: public Billboard {
 public:
     Enemy(Vector2D<double>, int);
     Enemy(double, double, int);  
-    void moveEnemy(Camera&, int[MAP_HEIGHT][MAP_WIDTH]);  
+    void moveEnemy(Camera&, int[MAP_HEIGHT][MAP_WIDTH], Effects& fx);  
 private:
     Vector2D<double> velocity;
+    float cooldown;
 };

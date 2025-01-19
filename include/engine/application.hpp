@@ -15,9 +15,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <iostream>
-#include <iomanip>
-#include <sstream>
 #include <vector>
 
 #include <engine/camera.hpp>
@@ -25,7 +22,9 @@
 #include <engine/raycaster.hpp>
 #include <engine/billboard_manager.hpp>
 #include <engine/map.hpp>
+#include <engine/gui.hpp>
 #include <engine/minimap.hpp>
+#include <engine/effects.hpp>
 
 class Application {
     private:
@@ -38,10 +37,8 @@ class Application {
         SDL_Texture* buffTex;
         Raycaster raycaster;
         BillboardManager bbManager;
-
-        // Affichage du text
-        TTF_Font* font;
-        SDL_Surface* gui;
+        GUI* gui;
+        Effects fx;
     public:
         Application();
         ~Application();

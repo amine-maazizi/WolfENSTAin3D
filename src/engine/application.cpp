@@ -48,18 +48,12 @@ Application::Application() : raycaster(Raycaster(camera)), bbManager(BillboardMa
         exit(1);
     }
 
-    font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 12);
-    if (font == NULL) {
-        printf("SDL n'a pas pu créer le font, erreur: %s\n", SDL_GetError());
-        SDL_DestroyTexture(buffTex);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        exit(1);
-    }
+    gui = new GUI(renderer);
+
 }
 
 Application::~Application() {
+    free(gui);
     SDL_DestroyTexture(this->buffTex);
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
@@ -91,41 +85,28 @@ void Application::handleInput() {
 
 void Application::process() {
     camera.move(worldMap);
-    bbManager.processEnemies(this->camera, worldMap);
+    bbManager.processEnemies(this->camera, worldMap, fx);
     raycaster.cast_rays(this->camera, worldMap, bbManager);
 }
 
 void Application::render(float fps) {
+    SDL_Rect viewport = {0, 0, static_cast<int>(SCREEN_WIDTH * SCALING_FACTOR), 
+                                static_cast<int>(SCREEN_HEIGHT * SCALING_FACTOR)};
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
     SDL_RenderClear(renderer);
 
+    fx.applyScreenShake(renderer, &viewport);
+
     raycaster.render(this->renderer, this->buffTex);
 
-    // creation d'une string litteral comportant le fps avec 2 digit precision
-    std::ostringstream oss;
-    oss << std::fixed << std::setprecision(2) << fps << " FPS";
-    std::string formatted = oss.str();
+    gui->render(fps, 1, 0, 3, 100, 100);  // Dummy values
 
-    SDL_Surface* fpsText = TTF_RenderText_Solid(font, 
-                    formatted.c_str(), 
-                    SDL_Color {255, 255, 255});
+    // TODO: logiquement elle doit faire partie du GUI mais elle a beacoups de dépendances donc on l'a laisse ici
+    // Vue qu'elle est dèjà bien encapsulé
+    Minimap::render(this->renderer, this->camera, this->bbManager.enemies, worldMap);
 
-    // TODO: créer une classe appart pour le GUI
-    SDL_Texture* gui = SDL_CreateTextureFromSurface(renderer, fpsText);
-    SDL_Rect gui_rect;
-    gui_rect.x = 0;  
-    gui_rect.y = 0; 
-    gui_rect.w = 128 * SCALING_FACTOR; 
-    gui_rect.h = 32 * SCALING_FACTOR; 
-
-    SDL_RenderCopy(renderer, gui, NULL, &gui_rect);
-
-    Minimap::render(this->renderer, this->camera, worldMap);
-
-    // TODO: pas optimale
-    SDL_FreeSurface(fpsText);
-    SDL_DestroyTexture(gui);
-
+    SDL_RenderSetViewport(renderer, &viewport);
     SDL_RenderPresent(this->renderer);
 }
 

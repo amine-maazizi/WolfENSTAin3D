@@ -17,6 +17,8 @@
 #include <engine/billboard.hpp>
 #include <engine/enemy.hpp>
 #include <engine/camera.hpp>
+#include <engine/effects.hpp>
+
 #include <vector>
 #include <memory>  // For smart pointers
 
@@ -25,7 +27,7 @@ class BillboardManager {
         BillboardManager(Camera&);
         void sortBillboards();
         void appendBillboards(std::vector<Billboard*>, Camera&);
-        void processEnemies(Camera&, int[MAP_WIDTH][MAP_HEIGHT]);
+        void processEnemies(Camera&, int[MAP_WIDTH][MAP_HEIGHT], Effects&);
 
         int number;
         std::vector<std::unique_ptr<Billboard>> billboards;  // Store smart pointers to billboards
