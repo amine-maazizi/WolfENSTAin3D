@@ -5,19 +5,21 @@ Enemy::Enemy(Vector2D<double> pos, int id) :  Billboard(pos, id), cooldown(0.0f)
 
 Enemy::Enemy(double x, double y, int id) : Billboard(x, y, id), cooldown(0.0f) {}
 
-void Enemy::moveEnemy(Camera& cam, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx) {
+void Enemy::moveEnemy(Player& p, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx) {
     float dt = 0.06; // pour le moment
     
     if (cooldown <= 0.0) {
-        if ((cam.position - position).length() < 4) {
-            this->velocity = (cam.position - position).normalized();
+        if ((p.position - position).length() < 4) {
+            this->velocity = (p.position - position).normalized();
             Vector2D<int> mapping = position + velocity * dt;
-            if ((cam.position - position).length() > 1 ) {
+            if ((p.position - position).length() > 1 ) {
                 if (map[mapping.getX()][mapping.getY()] == 0) 
                     this->position = position + velocity * dt; 
             } else {
                 // SHOOT
+                p.damage(0.2);
                 fx.shakeScreen(10, 10);
+                fx.reden(10, 100);
                 cooldown = 10.0; // valeur modifiable par la suite pas un litteral
             }
         }

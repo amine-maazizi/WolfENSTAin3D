@@ -17,7 +17,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <vector>
 
-#include <engine/camera.hpp>
+#include <engine/player.hpp>
 #include <engine/constantes.hpp>
 #include <engine/raycaster.hpp>
 #include <engine/billboard_manager.hpp>
@@ -33,7 +33,7 @@ class Application {
         SDL_Window* window;
 
         // Mon engin de raycasting
-        Camera camera;
+        Player player;
         SDL_Texture* buffTex;
         Raycaster raycaster;
         BillboardManager bbManager;

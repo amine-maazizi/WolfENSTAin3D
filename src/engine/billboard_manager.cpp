@@ -59,9 +59,9 @@ void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam
 }
 
 // Process enemy movements and update corresponding billboard positions
-void BillboardManager::processEnemies(Camera& cam, int map[MAP_WIDTH][MAP_HEIGHT], Effects& fx) {
+void BillboardManager::processEnemies(Player& p, int map[MAP_WIDTH][MAP_HEIGHT], Effects& fx) {
     for (auto& e : enemies) {
-        e.moveEnemy(cam, map, fx);
+        e.moveEnemy(p, map, fx);
 
         // Update the position of the corresponding billboard for each enemy
         // Assuming the billboard corresponds to the enemy's position

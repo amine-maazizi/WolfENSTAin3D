@@ -1,6 +1,6 @@
 #include <engine/application.hpp>
 
-Application::Application() : raycaster(Raycaster(camera)), bbManager(BillboardManager(camera)) {
+Application::Application() : raycaster(Raycaster(player)), bbManager(BillboardManager(player)) {
     // TODO: ajouter SQL_Quit() a toute les init
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL n'a pas pu être intialiser, erreur : %s\n", SDL_GetError());
@@ -84,9 +84,9 @@ void Application::handleInput() {
 
 
 void Application::process() {
-    camera.move(worldMap);
-    bbManager.processEnemies(this->camera, worldMap, fx);
-    raycaster.cast_rays(this->camera, worldMap, bbManager);
+    player.move(worldMap);
+    bbManager.processEnemies(this->player, worldMap, fx);
+    raycaster.cast_rays(this->player, worldMap, bbManager);
 }
 
 void Application::render(float fps) {
@@ -96,17 +96,21 @@ void Application::render(float fps) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
     SDL_RenderClear(renderer);
 
-    fx.applyScreenShake(renderer, &viewport);
-
     raycaster.render(this->renderer, this->buffTex);
 
-    gui->render(fps, 1, 0, 3, 100, 100);  // Dummy values
+    gui->render(fps, 1, 0, 3, player.life * 100, 100);  // Dummy values
 
     // TODO: logiquement elle doit faire partie du GUI mais elle a beacoups de dépendances donc on l'a laisse ici
     // Vue qu'elle est dèjà bien encapsulé
-    Minimap::render(this->renderer, this->camera, this->bbManager.enemies, worldMap);
+    Minimap::render(this->renderer, this->player, this->bbManager.enemies, worldMap);
 
+
+   // TODO: regrouper ses fonctions en une seule fonction de Effects
+    fx.applyScreenShake(renderer, &viewport);
+    fx.applyRedening(renderer);
+    
     SDL_RenderSetViewport(renderer, &viewport);
+
     SDL_RenderPresent(this->renderer);
 }
 

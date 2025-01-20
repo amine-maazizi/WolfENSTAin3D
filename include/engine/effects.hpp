@@ -18,19 +18,25 @@
 #include <SDL2/SDL.h>
 #include <random>
 
+struct Effect {
+        int duration; 
+        int magnitude; 
+        int elapsed;  
+};
 
-//TODO: faire une structure qui regroupe les duration, mag et elapsed pour chaque effets pour pouvoir les fiare en parallele
 
 class Effects {
     public:
         Effects();
         void shakeScreen(int, int);
         void applyScreenShake(SDL_Renderer*, SDL_Rect*);
+        
+        void reden(int, int);
+        void applyRedening(SDL_Renderer*);
     private:
         // Effects
-        int duration; 
-        int magnitude; 
-        int elapsed;  
+        Effect screenShake;
+        Effect redening;
 
         // randomness
         std::random_device rd;
