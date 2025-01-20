@@ -27,9 +27,10 @@
 [x] implémentation du GUI plus complet (dans sa classe)
 [x] Enemy shoots + et screen shake 
 
-[] effet rougissement après shooting
-[] ajout de vie, score 
+[x] effet rougissement après shooting
+[x] ajout de vie
 [] ajout du shooting du joueur
+[] implémentation du score
 [] implémentation du système de l'ammo
 [] implémentation de tue enemi
 [] implémentation de la mort et restart
