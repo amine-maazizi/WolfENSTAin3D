@@ -29,10 +29,19 @@
 
 [x] effet rougissement après shooting
 [x] ajout de vie
-[] ajout du shooting du joueur
-[] implémentation du score
-[] implémentation du système de l'ammo
-[] implémentation de tue enemi
-[] implémentation de la mort et restart
+[x] ajout du shooting du joueur
+[x] implémentation du score
+[x] implémentation du système de l'ammo basique
+[x] implémentation de l'élimination de l'enemi
+[] developper la map et les enemies 
+[] ajouter des objets pour faire jolie
+[] ajouter les effets sonores
+[] ajout d'un animated sprite pour le shooting
+[] ajout du système de scene
+[] ajout de main menu
+[] ajout du mode select et character select
 
 [] multijoeur coopératif local
+
+
+[] implémentation de la mort et restart

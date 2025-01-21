@@ -17,16 +17,26 @@
 
 #include <SDL2/SDL.h>
 #include <engine/camera.hpp>
+#include <engine/billboard_manager.hpp>
 #include <stdbool.h>
+#include <cmath>
 
+class BillboardManager;
+class Effects;
 class Player : public Camera {
 public:
 
     Player();
 
     void damage(float);
+    void shoot(float, BillboardManager&, Effects&);
+    void process(int[][MAP_WIDTH], BillboardManager&, Effects&);
 
-    float life;
+    int lives;
+    float health;
     bool isAlive;
+    float cooldown;
+    int score;
+    int ammo;
 };
 

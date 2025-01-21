@@ -84,7 +84,7 @@ void Application::handleInput() {
 
 
 void Application::process() {
-    player.move(worldMap);
+    player.process(worldMap, this->bbManager, this->fx);
     bbManager.processEnemies(this->player, worldMap, fx);
     raycaster.cast_rays(this->player, worldMap, bbManager);
 }
@@ -98,7 +98,7 @@ void Application::render(float fps) {
 
     raycaster.render(this->renderer, this->buffTex);
 
-    gui->render(fps, 1, 0, 3, player.life * 100, 100);  // Dummy values
+    gui->render(fps, 1, player.score, player.lives, player.health * 100, player.ammo);  // Dummy values
 
     // TODO: logiquement elle doit faire partie du GUI mais elle a beacoups de dépendances donc on l'a laisse ici
     // Vue qu'elle est dèjà bien encapsulé

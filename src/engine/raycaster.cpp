@@ -303,7 +303,6 @@ void Raycaster::cast_rays(Camera& cam, int worldMap[][MAP_WIDTH], BillboardManag
             // int texX = (int)((stripe - (-bbWidth / 2 + bbScreenX)) * TEX_WIDTH / bbWidth) / 256;
             int texX = (stripe - (-bbWidth / 2 + bbScreenX)) * TEX_WIDTH / bbWidth;
 
-
             // On va stocker le sprite dans le buffer du rendering si et seulement si
             // il est devant la  camera
             // il est sur l'écran 

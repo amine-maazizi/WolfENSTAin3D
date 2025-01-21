@@ -22,7 +22,11 @@
 
 #include <vector>
 #include <memory>  // For smart pointers
+#include <algorithm>
 
+
+class Player;
+class Enemy;
 class BillboardManager {
     public:
         BillboardManager(Camera&);

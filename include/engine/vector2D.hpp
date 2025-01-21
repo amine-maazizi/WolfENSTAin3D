@@ -57,6 +57,10 @@ public:
         return Vector2D(x - other.x, y - other.y);
     }
 
+    double operator*(const Vector2D& other) const {
+        return (x * other.x + y * other.y);
+    }
+
     Vector2D operator*(T scalar) const {
         return Vector2D(x * scalar, y * scalar);
     }

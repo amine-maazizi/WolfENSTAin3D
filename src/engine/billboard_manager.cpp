@@ -60,19 +60,44 @@ void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam
 
 // Process enemy movements and update corresponding billboard positions
 void BillboardManager::processEnemies(Player& p, int map[MAP_WIDTH][MAP_HEIGHT], Effects& fx) {
-    for (auto& e : enemies) {
+    // Track indices of billboards to remove
+    std::vector<int> billboardsToRemove;
+
+    // Process enemies and mark billboards for removal if enemies are not alive
+    for (size_t i = 0; i < enemies.size(); ++i) {
+        Enemy& e = enemies[i];
         e.moveEnemy(p, map, fx);
 
         // Update the position of the corresponding billboard for each enemy
-        // Assuming the billboard corresponds to the enemy's position
-        for (auto& bb : billboards) {
-            if (bb->texID == e.texID) {
-                bb->position = e.position;
-                break;  // Assuming one billboard per enemy
+        for (size_t j = 0; j < billboards.size(); ++j) {
+            if (billboards[j]->texID == e.texID) {
+                if (!e.isAlive) {
+                    billboardsToRemove.push_back(j);  // Mark billboard for removal
+                } else {
+                    billboards[j]->position = e.position;  // Update position
+                }
+                break;
             }
         }
     }
 
-    // After each frame, sort billboards based on their new positions
+    // Remove enemies that are not alive
+    enemies.erase(
+        std::remove_if(enemies.begin(), enemies.end(), [](const Enemy& e) {
+            return !e.isAlive;
+        }),
+        enemies.end()
+    );
+
+    // Remove marked billboards
+    for (auto it = billboardsToRemove.rbegin(); it != billboardsToRemove.rend(); ++it) {
+        int index = *it;
+        billboards.erase(billboards.begin() + index);
+        billboardOrder.erase(billboardOrder.begin() + index);
+        billboardDistance.erase(billboardDistance.begin() + index);
+    }
+
+    // Update the number of billboards and sort based on the new state
+    number = billboards.size();
     sortBillboards();
 }

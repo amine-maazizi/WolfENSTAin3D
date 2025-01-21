@@ -1,9 +1,18 @@
 #include <engine/enemy.hpp>
 
-Enemy::Enemy(Vector2D<double> pos, int id) :  Billboard(pos, id), cooldown(0.0f) {
+Enemy::Enemy(Vector2D<double> pos, int id) :  Billboard(pos, id), cooldown(0.0f), health(100), isAlive(true) {
 }
 
-Enemy::Enemy(double x, double y, int id) : Billboard(x, y, id), cooldown(0.0f) {}
+Enemy::Enemy(double x, double y, int id) :  Billboard(x, y, id), cooldown(0.0f), health(100), isAlive(true) {}
+
+#include <iostream>
+void Enemy::damage(float dmg) {
+    if (health - dmg <= 0) {
+        isAlive = false;
+        return;
+    }
+    health -= dmg;
+}
 
 void Enemy::moveEnemy(Player& p, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx) {
     float dt = 0.06; // pour le moment

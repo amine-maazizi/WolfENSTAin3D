@@ -20,11 +20,18 @@
 #include <engine/effects.hpp>
 #include <engine/a_star.hpp>
 
+#include <stdbool.h>
+
+class Player;
 class Enemy: public Billboard {
 public:
     Enemy(Vector2D<double>, int);
     Enemy(double, double, int);  
     void moveEnemy(Player&, int[MAP_HEIGHT][MAP_WIDTH], Effects& fx);  
+    void damage(float);
+
+    float health;
+    bool isAlive;
 private:
     Vector2D<double> velocity;
     float cooldown;
