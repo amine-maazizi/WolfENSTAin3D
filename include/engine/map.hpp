@@ -18,4 +18,4 @@
 #include <engine/billboard.Hpp>
 #include <vector>
 
-extern int worldMap[MAP_WIDTH][MAP_HEIGHT];
+extern int worldMap[MAP_HEIGHT][MAP_WIDTH];

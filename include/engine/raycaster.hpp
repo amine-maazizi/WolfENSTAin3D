@@ -35,6 +35,6 @@ class Raycaster {
     public:
         Raycaster(Camera&);
         ~Raycaster();
-        void cast_rays(Camera&, int[MAP_HEIGHT][MAP_WIDTH], BillboardManager&); // TODO: vue que j'ai passer la camera dans le constructeur pas besoin de la redefinir commme arg de func
+        void castRays(Camera&, int[MAP_HEIGHT][MAP_WIDTH], BillboardManager&); // TODO: vue que j'ai passer la camera dans le constructeur pas besoin de la redefinir commme arg de func
         void render(SDL_Renderer*, SDL_Texture*);
 };

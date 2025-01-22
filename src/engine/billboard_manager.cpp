@@ -4,7 +4,17 @@
 BillboardManager::BillboardManager(Camera& cam) {
     // Initializing some billboards and enemies
     billboards.push_back(std::make_unique<Billboard>(18.5, 10.5, 7));
-    enemies.push_back(Enemy(18.5, 15.5, 7));
+
+    // Initialize enemies
+    enemies.push_back(Enemy(2.0, 10.0, 7));  // Enemy 1: Narrow corridor
+    // enemies.push_back(Enemy(5.0, 8.0, 7));   // Enemy 2: Small room
+    // enemies.push_back(Enemy(7.0, 20.0, 9));  // Enemy 3: Intersection
+    // enemies.push_back(Enemy(8.0, 15.0, 9));  // Enemy 4: Mid-map
+    // enemies.push_back(Enemy(9.0, 18.0, 9));  // Enemy 5: Central challenge
+    // enemies.push_back(Enemy(10.0, 4.0, 7));  // Enemy 6: Guarding key items
+    // enemies.push_back(Enemy(12.0, 6.0, 7));  // Enemy 7: Dead-end ambush
+    // enemies.push_back(Enemy(13.0, 13.0, 9)); // Enemy 8: Room corner
+
 
     // Link enemies to billboards (optional: if you want a separate billboard for each enemy)
     for (auto& e : enemies) {
@@ -59,7 +69,7 @@ void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam
 }
 
 // Process enemy movements and update corresponding billboard positions
-void BillboardManager::processEnemies(Player& p, int map[MAP_WIDTH][MAP_HEIGHT], Effects& fx) {
+void BillboardManager::processEnemies(Player& p, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx) {
     // Track indices of billboards to remove
     std::vector<int> billboardsToRemove;
 

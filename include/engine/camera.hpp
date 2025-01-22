@@ -21,6 +21,8 @@
 
 class Camera {
 public:
+    Camera(double x, double y, double dirX, double dirY, double mSpeed, double rSpeed);
+
     Vector2D<double> position; 
     Vector2D<double> direction; 
     Vector2D<double> plane;

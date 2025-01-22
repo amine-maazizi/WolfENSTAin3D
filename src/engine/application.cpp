@@ -86,7 +86,7 @@ void Application::handleInput() {
 void Application::process() {
     player.process(worldMap, this->bbManager, this->fx);
     bbManager.processEnemies(this->player, worldMap, fx);
-    raycaster.cast_rays(this->player, worldMap, bbManager);
+    raycaster.castRays(this->player, worldMap, bbManager);
 }
 
 void Application::render(float fps) {

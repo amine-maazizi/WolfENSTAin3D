@@ -24,8 +24,8 @@
 #define TEX_WIDTH 64
 #define TEX_HEIGHT 64
 
-#define MAP_WIDTH 24
-#define MAP_HEIGHT 24
+#define MAP_WIDTH 32
+#define MAP_HEIGHT 16
 
 #define BASE_MOVE_SPEED 0.05
 

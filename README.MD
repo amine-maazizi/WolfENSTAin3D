@@ -38,9 +38,9 @@
 [] ajouter les effets sonores
 [] ajout d'un animated sprite pour le shooting
 [] ajout du système de scene
+
 [] ajout de main menu
 [] ajout du mode select et character select
-
 [] multijoeur coopératif local
 
 
