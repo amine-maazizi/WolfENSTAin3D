@@ -265,7 +265,6 @@ void Raycaster::castRays(Camera& cam, int worldMap[][MAP_WIDTH], BillboardManage
             }
     }
 
-    float viewMultiplier = 1.0f;
     // BILLBOARD CASTING
     for (int i = 0; i < bbManager.number; i++) {
         // position relative du billboard
@@ -308,7 +307,7 @@ void Raycaster::castRays(Camera& cam, int worldMap[][MAP_WIDTH], BillboardManage
             // il est devant la  camera
             // il est sur l'écran 
             // Zbuffer + perp Dist
-            if (transform.getY() > 0 && stripe > 0 && stripe < SCREEN_WIDTH && transform.getY() < bbManager.ZBuffer[stripe] * viewMultiplier) 
+            if (transform.getY() > 0 && stripe > 0 && stripe < SCREEN_WIDTH && transform.getY() < bbManager.ZBuffer[stripe] * 2.0) 
             for (int y = drawStartY; y < drawEndY; y++) { // pour tous pixel dans le stripe 
                 int d = y * 256 - SCREEN_HEIGHT * 128 + bbHeight * 128; // les facteurs sont pour eviter floats
                 int texY = (d * TEX_HEIGHT) / (bbHeight * 256);
