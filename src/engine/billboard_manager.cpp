@@ -3,10 +3,19 @@
 // Constructor: Use unique_ptr to store billboards and link them with enemies
 BillboardManager::BillboardManager(Camera& cam) {
     // Initializing some billboards and enemies
-    billboards.push_back(std::make_unique<Billboard>(18.5, 10.5, 7));
+    billboards.push_back(std::make_unique<Billboard>(5.5, 2, 7));
+    billboards.push_back(std::make_unique<Billboard>(6, 3, 7));
+    billboards.push_back(std::make_unique<Billboard>(6.5, 2, 7));
+    billboards.push_back(std::make_unique<Billboard>(2, 17, 9));
+    billboards.push_back(std::make_unique<Billboard>(3, 18, 9));
+    billboards.push_back(std::make_unique<Billboard>(2, 19, 9));
+    billboards.push_back(std::make_unique<Billboard>(2, 2, 8));
+    billboards.push_back(std::make_unique<Billboard>(15, 31, 8));
+    billboards.push_back(std::make_unique<Billboard>(2, 31, 8));
+    billboards.push_back(std::make_unique<Billboard>(15, 2, 8));
 
     // Initialize enemies
-    enemies.push_back(Enemy(2.0, 10.0, 7));  // Enemy 1: Narrow corridor
+    // enemies.push_back(Enemy(2.0, 10.0, 10));  // Enemy 1: Narrow corridor
     // enemies.push_back(Enemy(5.0, 8.0, 7));   // Enemy 2: Small room
     // enemies.push_back(Enemy(7.0, 20.0, 9));  // Enemy 3: Intersection
     // enemies.push_back(Enemy(8.0, 15.0, 9));  // Enemy 4: Mid-map

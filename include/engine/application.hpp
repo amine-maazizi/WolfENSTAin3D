@@ -15,16 +15,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
+
 #include <vector>
 
-#include <engine/player.hpp>
-#include <engine/constantes.hpp>
-#include <engine/raycaster.hpp>
-#include <engine/billboard_manager.hpp>
-#include <engine/map.hpp>
-#include <engine/gui.hpp>
-#include <engine/minimap.hpp>
-#include <engine/effects.hpp>
+#include <engine/game_scene.hpp>
+
 
 class Application {
     private:
@@ -32,13 +28,9 @@ class Application {
         SDL_Renderer* renderer;
         SDL_Window* window;
 
-        // Mon engin de raycasting
-        Player player;
-        SDL_Texture* buffTex;
-        Raycaster raycaster;
-        BillboardManager bbManager;
-        GUI* gui;
-        Effects fx;
+        // Scenes
+        int currentScene;
+        Scene* scenes[1];
     public:
         Application();
         ~Application();

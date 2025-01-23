@@ -1,0 +1,15 @@
+"filename", "language", "C++", "comment", "blank", "total"
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\a_star.cpp", "C++", 59, 5, 16, 80
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\application.cpp", "C++", 97, 4, 31, 132
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\billboard.cpp", "C++", 3, 0, 2, 5
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\billboard_manager.cpp", "C++", 80, 21, 21, 122
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\camera.cpp", "C++", 57, 1, 14, 72
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\constantes.cpp", "C++", 16, 0, 1, 17
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\effects.cpp", "C++", 38, 1, 12, 51
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\enemy.cpp", "C++", 32, 8, 11, 51
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\gui.cpp", "C++", 118, 12, 20, 150
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\map.cpp", "C++", 19, 0, 2, 21
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\minimap.cpp", "C++", 38, 3, 5, 46
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\player.cpp", "C++", 45, 3, 6, 54
+"c:\Academic\Code\Object-Oriented-Raycasting\src\engine\raycaster.cpp", "C++", 222, 46, 63, 331
+"Total", "-", 824, 104, 204, 1132

@@ -63,7 +63,7 @@ void Camera::move(int worldMap[MAP_HEIGHT][MAP_WIDTH]) {
     }
 
     // Sprinting
-    if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_SPACE]) {
+    if (keystate[SDL_SCANCODE_LSHIFT]) {
         moveSpeed = BASE_MOVE_SPEED * 2.0; // Increase movement speed for sprinting
     } else {
         moveSpeed = BASE_MOVE_SPEED; // Reset to normal speed when not sprinting

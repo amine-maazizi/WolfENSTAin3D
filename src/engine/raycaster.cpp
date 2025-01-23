@@ -265,7 +265,7 @@ void Raycaster::castRays(Camera& cam, int worldMap[][MAP_WIDTH], BillboardManage
             }
     }
 
-    float viewMultiplier = 1.5f;
+    float viewMultiplier = 1.0f;
     // BILLBOARD CASTING
     for (int i = 0; i < bbManager.number; i++) {
         // position relative du billboard

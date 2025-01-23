@@ -33,8 +33,8 @@
 [x] implémentation du score
 [x] implémentation du système de l'ammo basique
 [x] implémentation de l'élimination de l'enemi
-[] developper la map et les enemies 
-[] ajouter des objets pour faire jolie
+[/] developper la map et les enemies 
+[/] ajouter des objets pour faire jolie
 [] ajouter les effets sonores
 [] ajout d'un animated sprite pour le shooting
 [] ajout du système de scene

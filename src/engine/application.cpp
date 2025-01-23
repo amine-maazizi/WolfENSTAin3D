@@ -1,6 +1,6 @@
 #include <engine/application.hpp>
 
-Application::Application() : raycaster(Raycaster(player)), bbManager(BillboardManager(player)) {
+Application::Application() {
     // TODO: ajouter SQL_Quit() a toute les init
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL n'a pas pu être intialiser, erreur : %s\n", SDL_GetError());
@@ -14,6 +14,16 @@ Application::Application() : raycaster(Raycaster(player)), bbManager(BillboardMa
 
     if (TTF_Init() == -1) {
         printf("SDL TTF n'a pas pu être intialiser, erreur : %s\n", TTF_GetError());
+        exit(1);
+    }
+
+     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+        exit(1);
+    }
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("SDL_mixer could not initialize! Mix Error: %s\n", Mix_GetError());
         exit(1);
     }
 
@@ -33,30 +43,14 @@ Application::Application() : raycaster(Raycaster(player)), bbManager(BillboardMa
         exit(1);
     }
 
-    SDL_RenderClear(this->renderer);
-    buffTex = SDL_CreateTexture(renderer,
-                                SDL_PIXELFORMAT_ARGB8888,
-                                SDL_TEXTUREACCESS_STREAMING,
-                                SCREEN_WIDTH,
-                                SCREEN_HEIGHT);
-    
-    if (buffTex == NULL) {
-        printf("SDL n'a pas pu créer la texture, erreur: %s\n", SDL_GetError());
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        exit(1);
-    }
-
-    gui = new GUI(renderer);
-
+    scenes[0] = new GameScene();
 }
 
 Application::~Application() {
-    free(gui);
-    SDL_DestroyTexture(this->buffTex);
+    delete scenes[0];
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
+    Mix_CloseAudio();
     IMG_Quit();
     SDL_Quit();
 
@@ -84,32 +78,16 @@ void Application::handleInput() {
 
 
 void Application::process() {
-    player.process(worldMap, this->bbManager, this->fx);
-    bbManager.processEnemies(this->player, worldMap, fx);
-    raycaster.castRays(this->player, worldMap, bbManager);
+
 }
 
 void Application::render(float fps) {
-    SDL_Rect viewport = {0, 0, static_cast<int>(SCREEN_WIDTH * SCALING_FACTOR), 
-                                static_cast<int>(SCREEN_HEIGHT * SCALING_FACTOR)};
+
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
     SDL_RenderClear(renderer);
 
-    raycaster.render(this->renderer, this->buffTex);
-
-    gui->render(fps, 1, player.score, player.lives, player.health * 100, player.ammo);  // Dummy values
-
-    // TODO: logiquement elle doit faire partie du GUI mais elle a beacoups de dépendances donc on l'a laisse ici
-    // Vue qu'elle est dèjà bien encapsulé
-    Minimap::render(this->renderer, this->player, this->bbManager.enemies, worldMap);
-
-
-   // TODO: regrouper ses fonctions en une seule fonction de Effects
-    fx.applyScreenShake(renderer, &viewport);
-    fx.applyRedening(renderer);
     
-    SDL_RenderSetViewport(renderer, &viewport);
 
     SDL_RenderPresent(this->renderer);
 }
