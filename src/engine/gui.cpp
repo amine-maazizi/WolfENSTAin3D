@@ -2,7 +2,8 @@
 
 // TODO: add an offset based on length of str for each GUI textual element
 
-GUI::GUI(SDL_Renderer* rend) : renderer(rend) {
+GUI::GUI(SDL_Renderer* rend) : renderer(rend), 
+    character(AnimatedSprite(renderer, "assets/lhuillier_spritesheet.png", 64, 64)) {
    font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 12);
     if (font == NULL) {
         printf("SDL n'a pas pu créer le font, erreur: %s\n", SDL_GetError());
@@ -26,21 +27,8 @@ GUI::GUI(SDL_Renderer* rend) : renderer(rend) {
         exit(1);
     }
 
-    charSurf = IMG_Load("assets/lhuillier.png");
-    if (!charSurf) {
-        printf("SDL n'a pas pu charger la char du GUI: %s\n", IMG_GetError());
-        SDL_Quit();
-        exit(1);
-    }
+    character.setMode(AnimatedSprite::Mode::MANUAL);
 
-     // Create texture from surface
-    charTex = SDL_CreateTextureFromSurface(renderer, charSurf);
-    SDL_FreeSurface(charSurf); // Free the surface as it's no longer needed
-
-    if (!charTex) {
-        printf("SDL n'a pas pu creér la surface du char: %s\n", SDL_GetError());
-        exit(1);
-    }
 }
 
 void GUI::render(float fps, int level, int score, int lives, int health, int ammo) {
@@ -57,12 +45,13 @@ void GUI::render(float fps, int level, int score, int lives, int health, int amm
     SDL_Texture* textTexture = nullptr;
     SDL_Rect textRect = { 0, 0, 0, static_cast<int>(32 * SCALING_FACTOR) }; // Initialize rect with common height
 
-    SDL_Rect charRect;
-    charRect.x =static_cast<int>(264 * SCALING_FACTOR); 
-    charRect.y =static_cast<int>(255 * SCALING_FACTOR);
-    charRect.w =static_cast<int>(64 * SCALING_FACTOR);
-    charRect.h =static_cast<int>(64 * SCALING_FACTOR);
-    SDL_RenderCopy(renderer, charTex, NULL, &charRect);
+    const Uint8* keystate = SDL_GetKeyboardState(NULL);
+    if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) {
+        character.setFrame(0);
+    } else if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) {
+        character.setFrame(1);
+    }
+    character.render(264 * SCALING_FACTOR, 255 * SCALING_FACTOR);
 
     // Render the FPS
     std::ostringstream fpsStream;
@@ -145,6 +134,4 @@ GUI::~GUI() {
     SDL_DestroyTexture(guiTex);
     SDL_FreeSurface(pannelSurf);
     SDL_DestroyTexture(pannelTex);
-    SDL_FreeSurface(charSurf);
-    SDL_DestroyTexture(charTex);
 }

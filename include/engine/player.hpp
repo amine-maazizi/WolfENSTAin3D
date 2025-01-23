@@ -25,13 +25,13 @@ class BillboardManager;
 class Effects;
 class Player : public Camera {
 public:
-
-    Player();
+    Player(Effects& fx);
 
     void damage(float);
-    void shoot(float, BillboardManager&, Effects&);
-    void process(int[][MAP_WIDTH], BillboardManager&, Effects&);
+    void shoot(float, BillboardManager&);
+    void process(int[][MAP_WIDTH], BillboardManager&);
 
+    Effects& fx;
     int lives;
     float health;
     bool isAlive;

@@ -1,13 +1,12 @@
 #include <engine/game_scene.hpp>
 
-GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : (Raycaster(player)), bbManager(BillboardManager(player)) {
+GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : player(Player(fx)), raycaster(Raycaster(player)), bbManager(BillboardManager(player, fx)) {
     renderer = r;
     window = w;
     bgMusic = Mix_LoadMUS("assets/sfx/game.mp3");
     if (!bgMusic) {
         printf("Failed to load music! Mix Error: %s\n", Mix_GetError());
-    } else {
-        Mix_PlayMusic(bgMusic, -1); // -1 loops indefinitely
+        exit(1);
     }
 
        SDL_RenderClear(this->renderer);
@@ -35,13 +34,13 @@ GameScene::~GameScene() {
 }
 
 int GameScene::process(float dt) {
-    player.process(worldMap, this->bbManager, this->fx);
-    bbManager.processEnemies(this->player, worldMap, fx);
+    player.process(worldMap, this->bbManager);
+    bbManager.processEnemies(this->player, worldMap);
     raycaster.castRays(this->player, worldMap, bbManager);
-    return 0;
+    return GAME_SCENE;
 }
 
-void GameScene::render(SDL_Renderer* renderer) const {
+void GameScene::render(float fps) {
     SDL_Rect viewport = {0, 0, static_cast<int>(SCREEN_WIDTH * SCALING_FACTOR), 
                                 static_cast<int>(SCREEN_HEIGHT * SCALING_FACTOR)};
     
@@ -61,9 +60,13 @@ void GameScene::render(SDL_Renderer* renderer) const {
     SDL_RenderSetViewport(renderer, &viewport);
 }
 
-void GameScene::handleInput() {}
+int GameScene::handleInput(const Uint8* keystate) {
+    return GAME_SCENE;
+}
 
-void GameScene::onEnter() {}
+void GameScene::onEnter() {
+    Mix_PlayMusic(bgMusic, -1);
+}
 
 void GameScene::onExit() {}
 

@@ -1,6 +1,6 @@
 /**
- * @file        game_scene.hpp
- * @brief       fichier entête qui comporte les elements de la scène du jeu
+ * @file        title.hpp
+ * @brief       fichier entête qui comporte les elements de l'écran principale du jeu
  * @author      Amine Maazizi
  * @date        2025-01-23
  * @version     1.0
@@ -27,20 +27,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
-class GameScene : public Scene {
-private:
-   
+class TitleScene : public Scene {
 public:
     // Mon engin de raycasting
-    Player player;
-    SDL_Texture* buffTex;
-    Raycaster raycaster;
-    BillboardManager bbManager;
-    GUI* gui;
-    Effects fx;
-
-    GameScene(SDL_Window*, SDL_Renderer*);
-    ~GameScene();
+    TitleScene(SDL_Window*, SDL_Renderer*);
 
     // Core 
     int process(float);   

@@ -28,7 +28,7 @@ public:
     Enemy(Vector2D<double>, int);
     Enemy(double, double, int);  
     void moveEnemy(Player&, int[MAP_HEIGHT][MAP_WIDTH], Effects& fx);  
-    void damage(float);
+    void damage(float, Effects& fx);
 
     float health;
     bool isAlive;

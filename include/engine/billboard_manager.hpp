@@ -29,10 +29,12 @@ class Player;
 class Enemy;
 class BillboardManager {
     public:
-        BillboardManager(Camera&);
+        BillboardManager(Camera&, Effects& fx);
         void sortBillboards();
         void appendBillboards(std::vector<Billboard*>, Camera&);
-        void processEnemies(Player&, int[MAP_HEIGHT][MAP_WIDTH], Effects&);
+        void processEnemies(Player&, int[MAP_HEIGHT][MAP_WIDTH]);
+
+        Effects& fx;
 
         int number;
         std::vector<std::unique_ptr<Billboard>> billboards;  // Store smart pointers to billboards

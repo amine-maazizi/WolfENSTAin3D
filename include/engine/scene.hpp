@@ -15,17 +15,18 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
+#include <engine/constantes.hpp>
+
 class Scene {
 public:
     SDL_Window* window;
     SDL_Renderer* renderer;
     Mix_Music* bgMusic;
-    virtual ~Scene() = default;
 
     // Core 
     virtual int process(float) = 0;   
-    virtual void render() const = 0;             
-    virtual void handleInput() = 0;         
+    virtual void render(float) = 0;             
+    virtual int handleInput(const Uint8*) = 0;         
 
     // Lifecycle management : À implemnter si besoin
     virtual void onEnter() = 0;                  

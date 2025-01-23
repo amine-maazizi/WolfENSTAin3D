@@ -19,7 +19,9 @@
 
 #include <vector>
 
+#include <engine/title_scene.hpp>
 #include <engine/game_scene.hpp>
+
 
 
 class Application {
@@ -30,7 +32,7 @@ class Application {
 
         // Scenes
         int currentScene;
-        Scene* scenes[1];
+        Scene* scenes[2];
     public:
         Application();
         ~Application();

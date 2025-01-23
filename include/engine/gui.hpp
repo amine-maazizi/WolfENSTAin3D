@@ -24,6 +24,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include <engine/constantes.hpp>
+#include <engine/animated_sprite.hpp>
 
 #include <iostream>
 #include <iomanip>
@@ -40,7 +41,6 @@ private:
     SDL_Surface* fpsText;
     SDL_Surface* pannelSurf;
     SDL_Texture* pannelTex;
-    SDL_Surface* charSurf;
-    SDL_Texture* charTex;
+    AnimatedSprite character;
     SDL_Texture* guiTex;
 };

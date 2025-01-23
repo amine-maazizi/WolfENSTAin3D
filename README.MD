@@ -35,9 +35,10 @@
 [x] implémentation de l'élimination de l'enemi
 [/] developper la map et les enemies 
 [/] ajouter des objets pour faire jolie
-[] ajouter les effets sonores
+[x] ajouter les effets sonores
 [] ajout d'un animated sprite pour le shooting
-[] ajout du système de scene
+[x] ajout d'un animated sprite pour le joeur
+[x] ajout du système de scene
 
 [] ajout de main menu
 [] ajout du mode select et character select

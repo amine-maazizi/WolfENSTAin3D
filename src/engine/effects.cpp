@@ -1,6 +1,29 @@
 #include <engine/effects.hpp>
 
 Effects::Effects() : screenShake{0, 0, 0}, redening{0, 0, 0}, gen(rd()), dist(0.0, 1.0) {
+    const char* paths[SFX_NUM] {
+        "assets/sfx/Gatling Gun.wav",
+        "assets/sfx/Player Pain 1.wav",
+        "assets/sfx/Death 2.wav",
+        "assets/sfx/Enemy Pain.wav",
+        "assets/sfx/Death 1.wav",
+        "assets/sfx/Menu Toggle.wav",
+        "assets/sfx/Menu Select.wav",
+    };
+    
+    for (int i = 0; i < SFX_NUM; i++) {
+        sfx[i] = Mix_LoadWAV(paths[i]);
+        if(sfx[i] == NULL) {
+            printf("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+            exit(1);
+        }
+    }
+}
+
+Effects::~Effects() {
+    for (int i = 0; i < SFX_NUM; i++) {
+        Mix_FreeChunk(sfx[i]);
+    }
 }
 
 void Effects::shakeScreen(int duration, int magnitude) {
@@ -47,4 +70,8 @@ void Effects::applyRedening(SDL_Renderer* renderer) {
         // Reset blending mode once the effect is done
         SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
     }
+}
+
+void Effects::playSfx(int index) {
+    Mix_PlayChannel(-1, sfx[index], 0); // -1 uses the default channel, 0 means play once
 }

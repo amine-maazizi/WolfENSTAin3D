@@ -1,7 +1,7 @@
 #include <engine/billboard_manager.hpp>
 
 // Constructor: Use unique_ptr to store billboards and link them with enemies
-BillboardManager::BillboardManager(Camera& cam) {
+BillboardManager::BillboardManager(Camera& cam, Effects& fx): fx(fx) {
     // Initializing some billboards and enemies
     billboards.push_back(std::make_unique<Billboard>(5.5, 2, 7));
     billboards.push_back(std::make_unique<Billboard>(6, 3, 7));
@@ -15,7 +15,7 @@ BillboardManager::BillboardManager(Camera& cam) {
     billboards.push_back(std::make_unique<Billboard>(15, 2, 8));
 
     // Initialize enemies
-    // enemies.push_back(Enemy(2.0, 10.0, 10));  // Enemy 1: Narrow corridor
+    enemies.push_back(Enemy(4, 5, 10)); 
     // enemies.push_back(Enemy(5.0, 8.0, 7));   // Enemy 2: Small room
     // enemies.push_back(Enemy(7.0, 20.0, 9));  // Enemy 3: Intersection
     // enemies.push_back(Enemy(8.0, 15.0, 9));  // Enemy 4: Mid-map
@@ -78,7 +78,7 @@ void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam
 }
 
 // Process enemy movements and update corresponding billboard positions
-void BillboardManager::processEnemies(Player& p, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx) {
+void BillboardManager::processEnemies(Player& p, int map[MAP_HEIGHT][MAP_WIDTH]) {
     // Track indices of billboards to remove
     std::vector<int> billboardsToRemove;
 

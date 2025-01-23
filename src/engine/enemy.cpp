@@ -5,9 +5,10 @@ Enemy::Enemy(Vector2D<double> pos, int id) :  Billboard(pos, id), cooldown(0.0f)
 
 Enemy::Enemy(double x, double y, int id) :  Billboard(x, y, id), cooldown(0.0f), health(100), isAlive(true) {}
 
-#include <iostream>
-void Enemy::damage(float dmg) {
+void Enemy::damage(float dmg, Effects& fx) {
+    fx.playSfx(ENEMY_PAIN_SFX);
     if (health - dmg <= 0) {
+        fx.playSfx(ENEMY_DIE_SFX);
         isAlive = false;
         return;
     }

@@ -43,11 +43,15 @@ Application::Application() {
         exit(1);
     }
 
-    scenes[0] = new GameScene();
+    scenes[TITLE_SCENE] = new TitleScene(window, renderer);
+    scenes[GAME_SCENE] = new GameScene(window, renderer);
+    this->currentScene = TITLE_SCENE;
+    scenes[currentScene]->onEnter();
 }
 
 Application::~Application() {
     delete scenes[0];
+    delete scenes[1];
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
     Mix_CloseAudio();
@@ -74,11 +78,24 @@ void Application::handleInput() {
             
         }
     }
+
+    const Uint8* keystate = SDL_GetKeyboardState(NULL);
+    int newScene = scenes[this->currentScene]->handleInput(keystate);
+    if (newScene != this->currentScene) {
+        scenes[this->currentScene]->onExit();
+        currentScene = newScene;
+        scenes[this->currentScene]->onEnter();
+    }
 }
 
 
 void Application::process() {
-
+    int newScene = scenes[this->currentScene]->process(0.0f);
+    if (newScene != this->currentScene) {
+        scenes[this->currentScene]->onExit();
+        currentScene = newScene;
+        scenes[this->currentScene]->onEnter();
+    }
 }
 
 void Application::render(float fps) {
@@ -87,7 +104,7 @@ void Application::render(float fps) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
     SDL_RenderClear(renderer);
 
-    
+    scenes[this->currentScene]->render(fps);
 
     SDL_RenderPresent(this->renderer);
 }
