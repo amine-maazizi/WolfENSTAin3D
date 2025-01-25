@@ -27,6 +27,11 @@ Application::Application() {
         exit(1);
     }
 
+    if (SDLNet_Init() < 0) {
+        printf("SDL_net could not initialize! SDL_net Error: %s\n", SDLNet_GetError());
+        exit(1);
+    }
+
     this->window = SDL_CreateWindow("Raycasting", 
                             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
                             SCALING_FACTOR * SCREEN_WIDTH, SCALING_FACTOR * SCREEN_HEIGHT, 

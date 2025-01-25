@@ -21,6 +21,7 @@
 #include <engine/gui.hpp>
 #include <engine/minimap.hpp>
 #include <engine/effects.hpp>
+#include <engine/game_scene.hpp>
 
 #include <iostream>
 

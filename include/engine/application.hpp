@@ -16,13 +16,13 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
-
-#include <vector>
+#include <SDL2/SDL_net.h>
 
 #include <engine/title_scene.hpp>
 #include <engine/game_scene.hpp>
 #include <engine/select_scene.hpp>
 
+#include <vector>
 
 
 class Application {

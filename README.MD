@@ -34,8 +34,8 @@
 [x] implémentation du système de l'ammo basique
 [x] implémentation de l'élimination de l'enemi
 [x] developper la map 
-[/] ajouter des objets pour faire jolie
-[/] ajouter des enemies
+[x] ajouter des objets pour faire jolie
+[x] ajouter des enemies
 [x] ajouter les effets sonores
 [x] ajout d'un animated sprite pour le joeur
 [x] ajout du système de scene

@@ -23,6 +23,43 @@
 #include <engine/minimap.hpp>
 #include <engine/effects.hpp>
 
+#include <engine/server.hpp>
+#include <engine/client.hpp>
+
+#include <iostream>
+#include <vector>
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+
+/**
+ * @file        game_scene.hpp
+ * @brief       Header for game scene elements, including server-client networking.
+ * @author      Amine Maazizi
+ * @date        2025-01-23
+ * @version     1.1
+ * 
+ * @details
+ * This class manages the core gameplay loop, including rendering, input handling,
+ * and networking for multiplayer modes (host or join).
+ */
+
+#pragma once
+
+#include <engine/scene.hpp>
+#include <engine/player.hpp>
+#include <engine/constantes.hpp>
+#include <engine/raycaster.hpp>
+#include <engine/billboard_manager.hpp>
+#include <engine/enemy.hpp>
+#include <engine/map.hpp>
+#include <engine/gui.hpp>
+#include <engine/minimap.hpp>
+#include <engine/effects.hpp>
+
+#include <engine/server.hpp>
+#include <engine/client.hpp>
+
 #include <iostream>
 #include <vector>
 
@@ -31,7 +68,9 @@
 
 class GameScene : public Scene {
 private:
-   
+    Server* server;  // Pointer to the server (if hosting)
+    Client* client;  // Pointer to the client (if joining)
+
 public:
     // Mon engin de raycasting
     Player player;
@@ -43,15 +82,15 @@ public:
     Effects fx;
     bool help;
 
-    GameScene(SDL_Window*, SDL_Renderer*);
+    GameScene(SDL_Window* window, SDL_Renderer* renderer);
     ~GameScene();
 
     // Core 
-    int process(float);   
-    void render(float);             
-    int handleInput(const Uint8*);         
+    int process(float dt);   
+    void render(float dt);             
+    int handleInput(const Uint8* keystate);         
 
-    // Lifecycle management : À implemnter si besoin
+    // Lifecycle management
     void onEnter();                  
     void onExit();                   
     void pause();                   

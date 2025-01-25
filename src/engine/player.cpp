@@ -1,6 +1,18 @@
 #include <engine/player.hpp>
 
-Player::Player(Effects& fx) : fx(fx), Camera(8, 2, -1, 0, 0.05, 0.04), health(1.0f), isAlive(true), cooldown(0.0f), lives(3), score(0), ammo(100) {}
+Player::Player(Effects& fx) : fx(fx), Camera(8, 2, -1, 0, 0.05, 0.04), health(1.0f), isAlive(true), cooldown(0.0f), lives(3), score(0), ammo(100) {
+    switch (gameMode) {
+        case SOLO_MODE:
+            id = 1;
+            break;
+        case HOST_MODE:
+            id = 1;
+            break;
+        case JOIN_MODE:
+            id = 2;
+            break;
+    }
+}
 
 void Player::damage(float dmg) {
     health -= dmg;
@@ -42,18 +54,90 @@ void Player::shoot(float dmg, std::vector<Enemy>& enemies) {
     }
 }
 
-void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& enemies) {
-    // TODO: ajouter keystate comme argument de move 
-    move(worldMap);
+void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& enemies, Server* server, Client* client) {
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
+    // Movement (W or UP arrow)
+    if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) {
+        Vector2D<double> nextPosition = position + direction * moveSpeed;
+        if (worldMap[int(nextPosition.getX())][int(position.getY())] == 0) {
+            position.setX(nextPosition.getX());
+        }
+        if (worldMap[int(position.getX())][int(nextPosition.getY())] == 0) {
+            position.setY(nextPosition.getY());
+        }
+        if (client) client->sendInput(0x01, position.getX(), position.getY());
+    }
+
+    // Backward movement (S or DOWN arrow)
+    if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) {
+        Vector2D<double> nextPosition = position - direction * moveSpeed;
+        if (worldMap[int(nextPosition.getX())][int(position.getY())] == 0) {
+            position.setX(nextPosition.getX());
+        }
+        if (worldMap[int(position.getX())][int(nextPosition.getY())] == 0) {
+            position.setY(nextPosition.getY());
+        }
+        if (client) client->sendInput(0x01, position.getX(), position.getY());
+    }
+
+    // Rotation (D/RIGHT or A/LEFT)
+    if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) {
+        double cosRot = cos(-rotSpeed);
+        double sinRot = sin(-rotSpeed);
+
+        double newDirX = direction.getX() * cosRot - direction.getY() * sinRot;
+        double newDirY = direction.getX() * sinRot + direction.getY() * cosRot;
+        direction.setX(newDirX);
+        direction.setY(newDirY);
+
+        double newPlaneX = plane.getX() * cosRot - plane.getY() * sinRot;
+        double newPlaneY = plane.getX() * sinRot + plane.getY() * cosRot;
+        plane.setX(newPlaneX);
+        plane.setY(newPlaneY);
+
+        if (client) client->sendInput(0x04, position.getX(), position.getY());
+    }
+
+    if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) {
+        double cosRot = cos(rotSpeed);
+        double sinRot = sin(rotSpeed);
+
+        double newDirX = direction.getX() * cosRot - direction.getY() * sinRot;
+        double newDirY = direction.getX() * sinRot + direction.getY() * cosRot;
+        direction.setX(newDirX);
+        direction.setY(newDirY);
+
+        double newPlaneX = plane.getX() * cosRot - plane.getY() * sinRot;
+        double newPlaneY = plane.getX() * sinRot + plane.getY() * cosRot;
+        plane.setX(newPlaneX);
+        plane.setY(newPlaneY);
+
+        if (client) client->sendInput(0x04, position.getX(), position.getY());
+    }
+
+    // Sprinting (SHIFT)
+    if (keystate[SDL_SCANCODE_LSHIFT]) {
+        moveSpeed = BASE_MOVE_SPEED * 2.0; // Double speed for sprinting
+        if (client) client->sendInput(0x03, position.getX(), position.getY()); // Send sprinting action
+    } else {
+        moveSpeed = BASE_MOVE_SPEED;
+    }
+
+    // Shooting (SPACE)
     if (cooldown <= 0.0) {
         if (keystate[SDL_SCANCODE_SPACE]) {
             fx.playSfx(SHOOT_SFX);
             shoot(34, enemies);
             cooldown = 10.0;
-        } 
+            if (client) client->sendInput(0x02, position.getX(), position.getY());
+        }
     } else {
         cooldown--;
+    }
+
+    // Update server for hosting
+    if (server) {
+        server->processClientActions();
     }
 }

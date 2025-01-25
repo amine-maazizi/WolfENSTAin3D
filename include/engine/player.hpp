@@ -18,7 +18,9 @@
 #include <SDL2/SDL.h>
 #include <engine/camera.hpp>
 #include <engine/billboard_manager.hpp>
-#include <engine/enemy.hpp>
+
+#include <engine/server.hpp>
+#include <engine/client.hpp>
 
 
 #include <stdbool.h>
@@ -28,14 +30,17 @@
 class BillboardManager;
 class Effects;
 class Enemy;
+class Server;
+
 class Player : public Camera {
 public:
-    Player(Effects& fx);
+    Player(Effects&);
 
     void damage(float);
     void shoot(float, std::vector<Enemy>&);
-    void process(int[][MAP_WIDTH], std::vector<Enemy>&);
+    void process(int[][MAP_WIDTH], std::vector<Enemy>&, Server*, Client*);
 
+    int id;
     Effects& fx;
     int lives;
     float health;

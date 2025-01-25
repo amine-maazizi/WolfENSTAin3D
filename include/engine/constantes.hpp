@@ -43,4 +43,10 @@
 #define ENTER_SFX 6
 
 
+#define SOLO_MODE 0
+#define HOST_MODE 1
+#define JOIN_MODE 2
+
 extern const char* texPaths[TEXTURE_NUMBER];
+
+extern int gameMode;

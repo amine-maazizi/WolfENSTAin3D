@@ -36,11 +36,8 @@ GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : player(Player(fx)), rayca
 
     
     for (auto& enemy : enemies) {
-        bbManager.addBillboard(enemy.bb, player);  // Transfer ownership to BillboardManager
+        bbManager.addBillboard(enemy.bb, player); 
     }
-
-
-    gui = new GUI(renderer);
 
 }
 
@@ -50,7 +47,17 @@ GameScene::~GameScene() {
 }
 
 int GameScene::process(float dt) {
-    player.process(worldMap, this->enemies);
+    if (gameMode == HOST_MODE && server) {
+        server->update();
+    }
+
+    if (gameMode == JOIN_MODE && client) {
+        // Receive game state updates from the server
+        client->receiveGameState();
+    }
+
+
+    player.process(worldMap, this->enemies, server, client);
     for (auto& e: enemies) {
         e.moveEnemy(player, worldMap, fx, dt);
     }
@@ -81,6 +88,11 @@ void GameScene::render(float fps) {
 }
 
 int GameScene::handleInput(const Uint8* keystate) {
+    if (client && !client->isController) {
+            // If the client doesn't have control, ignore input
+            return 0;
+    }
+
     static bool hKeyPressed = false; 
 
     if (keystate[SDL_SCANCODE_H]) {
@@ -91,11 +103,28 @@ int GameScene::handleInput(const Uint8* keystate) {
     } else {
         hKeyPressed = false;  
     }
+
+    // Transfer control
+    if (keystate[SDL_SCANCODE_T]) {
+        if (client) client->requestControlTransfer();
+    }
     
     return GAME_SCENE;
 }
 
 void GameScene::onEnter() {
+    gui = new GUI(renderer);
+    switch (gameMode) {
+        case HOST_MODE:
+            server = new Server(1234, &player); // Create a server listening on port 1234
+            printf("Hosting game...\n");
+            break;
+        case JOIN_MODE:
+            client = new Client("127.0.0.1", 1234); // Connect to a server
+            printf("Joining game...\n");
+            break;
+    }
+
     Mix_PlayMusic(bgMusic, -1);
 }
 
