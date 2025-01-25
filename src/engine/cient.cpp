@@ -1,58 +1,52 @@
 #include <engine/client.hpp>
 
-Client::Client(const char* serverIP, Uint16 port) : isController(false), playerX(0), playerY(0) {
-    if (SDLNet_ResolveHost(&ip, serverIP, port) < 0) {
-        printf("SDLNet_ResolveHost failed: %s\n", SDLNet_GetError());
-        exit(1);
-    }
-    socket = SDLNet_TCP_Open(&ip);
-    if (!socket) {
-        printf("SDLNet_TCP_Open failed: %s\n", SDLNet_GetError());
-        exit(1);
-    }
-    printf("Connected to server at %s:%d\n", serverIP, port);
-}
+
+Client::Client() : clientSocket(nullptr) {}
 
 Client::~Client() {
-    SDLNet_TCP_Close(socket);
-    SDLNet_Quit();
+    disconnect();
 }
 
-void Client::sendInput(Uint8 actionType, float x, float y) {
-    if (!isController) return;
+bool Client::connectToServer(const std::string &host, Uint16 port) {
+    if (SDLNet_Init() == -1) {
+        std::cerr << "SDLNet_Init: " << SDLNet_GetError() << std::endl;
+        return false;
+    }
 
-    char buffer[256];
-    buffer[0] = actionType;
-    *(float*)(buffer + 1) = x;
-    *(float*)(buffer + 5) = y;
+    IPaddress ip;
+    if (SDLNet_ResolveHost(&ip, host.c_str(), port) == -1) {
+        std::cerr << "SDLNet_ResolveHost: " << SDLNet_GetError() << std::endl;
+        return false;
+    }
 
-    SDLNet_TCP_Send(socket, buffer, 9);
+    clientSocket = SDLNet_TCP_Open(&ip);
+    if (!clientSocket) {
+        std::cerr << "SDLNet_TCP_Open: " << SDLNet_GetError() << std::endl;
+        return false;
+    }
+
+    return true;
 }
 
-void Client::receiveGameState() {
-    char buffer[256];
-    int len = SDLNet_TCP_Recv(socket, buffer, sizeof(buffer));
+void Client::sendMessage(const std::string &message) {
+    if (clientSocket) {
+        SDLNet_TCP_Send(clientSocket, message.c_str(), message.size() + 1);
+    }
+}
+
+std::string Client::receiveMessage() {
+    char buffer[1024];
+    int len = SDLNet_TCP_Recv(clientSocket, buffer, sizeof(buffer));
     if (len > 0) {
-        int offset = 0;
-
-        playerX = *(float*)(buffer + offset);
-        offset += sizeof(float);
-        playerY = *(float*)(buffer + offset);
-        offset += sizeof(float);
-
-        isController = (buffer[offset] == 0);
+        return std::string(buffer, len);
     }
+    return "";
 }
 
-void Client::requestControlTransfer() {
-    char buffer[1];
-    buffer[0] = 0x05;
-    SDLNet_TCP_Send(socket, buffer, 1);
-}
-
-void Client::render() {
-    printf("Rendering player at (%f, %f)\n", playerX, playerY);
-    if (isController) {
-        printf("You have control!\n");
+void Client::disconnect() {
+    if (clientSocket) {
+        SDLNet_TCP_Close(clientSocket);
+        clientSocket = nullptr;
     }
+    SDLNet_Quit();
 }

@@ -54,7 +54,7 @@ void Player::shoot(float dmg, std::vector<Enemy>& enemies) {
     }
 }
 
-void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& enemies, Server* server, Client* client) {
+void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& enemies) {
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
     // Movement (W or UP arrow)
@@ -66,7 +66,6 @@ void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& en
         if (worldMap[int(position.getX())][int(nextPosition.getY())] == 0) {
             position.setY(nextPosition.getY());
         }
-        if (client) client->sendInput(0x01, position.getX(), position.getY());
     }
 
     // Backward movement (S or DOWN arrow)
@@ -78,7 +77,6 @@ void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& en
         if (worldMap[int(position.getX())][int(nextPosition.getY())] == 0) {
             position.setY(nextPosition.getY());
         }
-        if (client) client->sendInput(0x01, position.getX(), position.getY());
     }
 
     // Rotation (D/RIGHT or A/LEFT)
@@ -96,7 +94,6 @@ void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& en
         plane.setX(newPlaneX);
         plane.setY(newPlaneY);
 
-        if (client) client->sendInput(0x04, position.getX(), position.getY());
     }
 
     if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) {
@@ -113,13 +110,11 @@ void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& en
         plane.setX(newPlaneX);
         plane.setY(newPlaneY);
 
-        if (client) client->sendInput(0x04, position.getX(), position.getY());
     }
 
     // Sprinting (SHIFT)
     if (keystate[SDL_SCANCODE_LSHIFT]) {
         moveSpeed = BASE_MOVE_SPEED * 2.0; // Double speed for sprinting
-        if (client) client->sendInput(0x03, position.getX(), position.getY()); // Send sprinting action
     } else {
         moveSpeed = BASE_MOVE_SPEED;
     }
@@ -130,14 +125,10 @@ void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& en
             fx.playSfx(SHOOT_SFX);
             shoot(34, enemies);
             cooldown = 10.0;
-            if (client) client->sendInput(0x02, position.getX(), position.getY());
         }
     } else {
         cooldown--;
     }
 
-    // Update server for hosting
-    if (server) {
-        server->processClientActions();
-    }
+
 }

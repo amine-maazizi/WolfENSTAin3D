@@ -14,30 +14,32 @@
 
 #pragma once
 
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_net.h>
 #include <vector>
 #include <cstdio>
 
+#include <iostream>
+#include <string>
+
 #include <engine/player.hpp>
 
 
-class Player; // Forward declaration of Player
 
 class Server {
 private:
-    IPaddress ip;                   // Server IP address
-    TCPsocket serverSocket;         // Server TCP socket
-    std::vector<TCPsocket> clients; // List of connected clients
-    Player* player;                 // Pointer to the single player in the game
-    int currentControllerId;        // ID of the client with control
-
-    void broadcastGameState();
+    TCPsocket serverSocket;
+    std::vector<TCPsocket> clients;
+    bool isRunning;
 
 public:
-    Server(Uint16 port, Player* player);
+    Server();
     ~Server();
 
-    void acceptClients();
-    void processClientActions();
-    void update();
+    bool start(Uint16 port);
+    void stop();
+    void broadcast(const std::string &message);
+    std::vector<std::string> receiveMessages();
+
+
 };

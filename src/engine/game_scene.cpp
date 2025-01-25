@@ -47,21 +47,25 @@ GameScene::~GameScene() {
 }
 
 int GameScene::process(float dt) {
-    if (gameMode == HOST_MODE && server) {
-        server->update();
+    player.process(worldMap, enemies);
+
+    for (auto &enemy : enemies) {
+        enemy.moveEnemy(player, worldMap, fx, dt);
     }
 
-    if (gameMode == JOIN_MODE && client) {
-        // Receive game state updates from the server
-        client->receiveGameState();
+    if (gameMode == HOST_MODE) {
+        auto messages = server.receiveMessages();
+        for (const auto &msg : messages) {
+            std::cout << "Received from client: " << msg << std::endl;
+        }
+        server.broadcast("Server game state update");
+    } else if (gameMode == JOIN_MODE) {
+        client.sendMessage("Client game state update");
+        std::cout << "Received from server: " << client.receiveMessage() << std::endl;
     }
 
+    raycaster.castRays(player, worldMap, bbManager);
 
-    player.process(worldMap, this->enemies, server, client);
-    for (auto& e: enemies) {
-        e.moveEnemy(player, worldMap, fx, dt);
-    }
-    raycaster.castRays(this->player, worldMap, bbManager);
     return GAME_SCENE;
 }
 
@@ -88,10 +92,7 @@ void GameScene::render(float fps) {
 }
 
 int GameScene::handleInput(const Uint8* keystate) {
-    if (client && !client->isController) {
-            // If the client doesn't have control, ignore input
-            return 0;
-    }
+
 
     static bool hKeyPressed = false; 
 
@@ -106,7 +107,6 @@ int GameScene::handleInput(const Uint8* keystate) {
 
     // Transfer control
     if (keystate[SDL_SCANCODE_T]) {
-        if (client) client->requestControlTransfer();
     }
     
     return GAME_SCENE;
@@ -114,21 +114,31 @@ int GameScene::handleInput(const Uint8* keystate) {
 
 void GameScene::onEnter() {
     gui = new GUI(renderer);
+
     switch (gameMode) {
         case HOST_MODE:
-            server = new Server(1234, &player); // Create a server listening on port 1234
-            printf("Hosting game...\n");
+            if (server.start(9999)) {
+                std::cout << "Server started." << std::endl;
+            }
             break;
         case JOIN_MODE:
-            client = new Client("127.0.0.1", 1234); // Connect to a server
-            printf("Joining game...\n");
+            if (client.connectToServer("127.0.0.1", 9999)) {
+                std::cout << "Connected to server." << std::endl;
+            }
             break;
     }
 
     Mix_PlayMusic(bgMusic, -1);
 }
 
-void GameScene::onExit() {}
+void GameScene::onExit() {
+    if (gameMode == HOST_MODE) {
+        server.stop();
+    } else if (gameMode == JOIN_MODE) {
+        client.disconnect();
+    }
+    Mix_HaltMusic();
+}
 
 void GameScene::pause() {}
 

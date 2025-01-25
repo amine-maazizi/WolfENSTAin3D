@@ -107,7 +107,6 @@ void Application::process(float dt) {
 
 void Application::render(float fps) {
 
-
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
     SDL_RenderClear(renderer);
 

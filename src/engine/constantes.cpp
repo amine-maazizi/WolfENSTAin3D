@@ -17,3 +17,4 @@ const char* texPaths[TEXTURE_NUMBER] = {
 };
 
 int gameMode = SOLO_MODE;
+

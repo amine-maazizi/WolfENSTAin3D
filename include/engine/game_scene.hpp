@@ -68,8 +68,8 @@
 
 class GameScene : public Scene {
 private:
-    Server* server;  // Pointer to the server (if hosting)
-    Client* client;  // Pointer to the client (if joining)
+    Server server;  
+    Client client;  
 
 public:
     // Mon engin de raycasting

@@ -38,7 +38,7 @@ public:
 
     void damage(float);
     void shoot(float, std::vector<Enemy>&);
-    void process(int[][MAP_WIDTH], std::vector<Enemy>&, Server*, Client*);
+    void process(int[][MAP_WIDTH], std::vector<Enemy>&);
 
     int id;
     Effects& fx;

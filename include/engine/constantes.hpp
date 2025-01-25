@@ -12,6 +12,7 @@
 
 #pragma once
 
+
 #define SCALING_FACTOR 1.5
 
 #define SCREEN_WIDTH 640
@@ -47,6 +48,13 @@
 #define HOST_MODE 1
 #define JOIN_MODE 2
 
+
+#define CONTROL_TRANSFER 0x01;
+#define PLAYER_INPUT 0x02;
+#define ENEMY_DEAD 0x03;
+
 extern const char* texPaths[TEXTURE_NUMBER];
 
 extern int gameMode;
+
+

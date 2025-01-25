@@ -13,23 +13,22 @@
 #pragma once
 
 #include <SDL2/SDL_net.h>
+#include <SDL2/SDL.h>
 #include <vector>
 #include <cstdio>
+#include <iostream>
+#include <string>
 
 class Client {
 private:
-    IPaddress ip;      // Server IP address
-    TCPsocket socket;  // Client's socket connection
-    float playerX, playerY; // Player position
+    TCPsocket clientSocket;
 
 public:
-    bool isController; // True if this client has control
-
-    Client(const char* serverIP, Uint16 port);
+    Client();
     ~Client();
 
-    void sendInput(Uint8 actionType, float x = 0, float y = 0);
-    void receiveGameState();
-    void requestControlTransfer();
-    void render();
+    bool connectToServer(const std::string &host, Uint16 port);
+    void sendMessage(const std::string &message);
+    std::string receiveMessage();
+    void disconnect();
 };
