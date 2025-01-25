@@ -18,18 +18,23 @@
 #include <SDL2/SDL.h>
 #include <engine/camera.hpp>
 #include <engine/billboard_manager.hpp>
+#include <engine/enemy.hpp>
+
+
 #include <stdbool.h>
 #include <cmath>
+#include <vector>
 
 class BillboardManager;
 class Effects;
+class Enemy;
 class Player : public Camera {
 public:
     Player(Effects& fx);
 
     void damage(float);
-    void shoot(float, BillboardManager&);
-    void process(int[][MAP_WIDTH], BillboardManager&);
+    void shoot(float, std::vector<Enemy>&);
+    void process(int[][MAP_WIDTH], std::vector<Enemy>&);
 
     Effects& fx;
     int lives;

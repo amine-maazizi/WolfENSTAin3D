@@ -35,7 +35,7 @@ GUI::GUI(SDL_Renderer* rend) : renderer(rend),
 
 }
 
-void GUI::render(float fps, int level, int score, int lives, int health, int ammo) {
+void GUI::render(float fps, int level, int score, int lives, int health, int ammo, bool toggleHelp) {
     // Render the background panel texture
     SDL_RenderCopy(renderer, pannelTex, NULL, NULL);
 
@@ -64,6 +64,7 @@ void GUI::render(float fps, int level, int score, int lives, int health, int amm
     gun.update(0.6f);
     gun.render(276 * SCALING_FACTOR, 176 * SCALING_FACTOR);
 
+    if (toggleHelp) {
     // Render the FPS
     std::ostringstream fpsStream;
     fpsStream << std::fixed << std::setprecision(2) << fps << " FPS";
@@ -76,6 +77,7 @@ void GUI::render(float fps, int level, int score, int lives, int health, int amm
     SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
     SDL_FreeSurface(textSurface);
     SDL_DestroyTexture(textTexture);
+    }
 
     // Render the level
     std::ostringstream levelStream;

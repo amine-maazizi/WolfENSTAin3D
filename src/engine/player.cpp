@@ -15,19 +15,19 @@ void Player::damage(float dmg) {
     }
 }
 
-void Player::shoot(float dmg, BillboardManager& bbManager) {
+void Player::shoot(float dmg, std::vector<Enemy>& enemies) {
     // Take the closest enemy who's cosine with the direction vector is in range [0, PI]
     // compute cosine of the direction vector 
     double distance = INFINITY;
     Enemy*  closest_enemy = NULL;
     double min_angle = 0.0;
-    for (auto& e : bbManager.enemies) {
+    for (auto& e : enemies) {
         if (e.isAlive) {
-            double dist = (position - e.position).length(); 
-            Vector2D<double> dir = (position - e.position).normalized();
+            double dist = (position - e.bb->position).length(); 
+            Vector2D<double> dir = (position - e.bb->position).normalized();
             double angle = acos(direction * dir);
             if (dist < distance && angle > 3 * M_PI / 4 && dist < 4) {
-                distance = (position - e.position).length();
+                distance = (position - e.bb->position).length();
                 min_angle = angle;
                 closest_enemy = &e;
             }
@@ -42,7 +42,7 @@ void Player::shoot(float dmg, BillboardManager& bbManager) {
     }
 }
 
-void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], BillboardManager& bbManager) {
+void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], std::vector<Enemy>& enemies) {
     // TODO: ajouter keystate comme argument de move 
     move(worldMap);
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
@@ -50,7 +50,7 @@ void Player::process(int worldMap[MAP_HEIGHT][MAP_WIDTH], BillboardManager& bbMa
     if (cooldown <= 0.0) {
         if (keystate[SDL_SCANCODE_SPACE]) {
             fx.playSfx(SHOOT_SFX);
-            shoot(34, bbManager);
+            shoot(34, enemies);
             cooldown = 10.0;
         } 
     } else {

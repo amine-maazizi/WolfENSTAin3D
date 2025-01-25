@@ -1,6 +1,6 @@
 #include <engine/game_scene.hpp>
 
-GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : player(Player(fx)), raycaster(Raycaster(player)), bbManager(BillboardManager(player, fx)) {
+GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : player(Player(fx)), raycaster(Raycaster(player)), bbManager(BillboardManager(player, fx)), help(false) {
     renderer = r;
     window = w;
     bgMusic = Mix_LoadMUS("assets/sfx/game.mp3");
@@ -24,18 +24,36 @@ GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : player(Player(fx)), rayca
         exit(1);
     }
 
+    // Initialize enemies using push_back
+    enemies.push_back(Enemy(3, 6, 10));
+    enemies.push_back(Enemy(15, 15, 12));
+    enemies.push_back(Enemy(8, 9, 12));
+    enemies.push_back(Enemy(14, 16, 10));
+    enemies.push_back(Enemy(13, 20, 10));
+    enemies.push_back(Enemy(3, 29, 12));
+    enemies.push_back(Enemy(3, 16, 10));
+    enemies.push_back(Enemy(3, 23, 10));
+
+    
+    for (auto& enemy : enemies) {
+        bbManager.addBillboard(enemy.bb, player);  // Transfer ownership to BillboardManager
+    }
+
+
     gui = new GUI(renderer);
 
 }
 
 GameScene::~GameScene() {
-    free(gui);
+    delete gui;
     SDL_DestroyTexture(this->buffTex);
 }
 
 int GameScene::process(float dt) {
-    player.process(worldMap, this->bbManager);
-    bbManager.processEnemies(this->player, worldMap);
+    player.process(worldMap, this->enemies);
+    for (auto& e: enemies) {
+        e.moveEnemy(player, worldMap, fx, dt);
+    }
     raycaster.castRays(this->player, worldMap, bbManager);
     return GAME_SCENE;
 }
@@ -46,11 +64,13 @@ void GameScene::render(float fps) {
     
     raycaster.render(this->renderer, this->buffTex);
 
-    gui->render(fps, 1, player.score, player.lives, player.health * 100, player.ammo);  // Dummy values
+    gui->render(fps, 1, player.score, player.lives, player.health * 100, player.ammo, help);  // Dummy values
 
     // TODO: logiquement elle doit faire partie du GUI mais elle a beacoups de dépendances donc on l'a laisse ici
     // Vue qu'elle est dèjà bien encapsulé
-    Minimap::render(this->renderer, this->player, this->bbManager.enemies, worldMap);
+    if (help) {
+        Minimap::render(this->renderer, this->player, enemies, worldMap);
+    }
 
 
    // TODO: regrouper ses fonctions en une seule fonction de Effects
@@ -61,6 +81,17 @@ void GameScene::render(float fps) {
 }
 
 int GameScene::handleInput(const Uint8* keystate) {
+    static bool hKeyPressed = false; 
+
+    if (keystate[SDL_SCANCODE_H]) {
+        if (!hKeyPressed) {  
+            help = !help;
+            hKeyPressed = true;  
+        }
+    } else {
+        hKeyPressed = false;  
+    }
+    
     return GAME_SCENE;
 }
 

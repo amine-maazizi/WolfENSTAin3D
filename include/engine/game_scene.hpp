@@ -17,12 +17,14 @@
 #include <engine/constantes.hpp>
 #include <engine/raycaster.hpp>
 #include <engine/billboard_manager.hpp>
+#include <engine/enemy.hpp>
 #include <engine/map.hpp>
 #include <engine/gui.hpp>
 #include <engine/minimap.hpp>
 #include <engine/effects.hpp>
 
 #include <iostream>
+#include <vector>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
@@ -35,9 +37,11 @@ public:
     Player player;
     SDL_Texture* buffTex;
     Raycaster raycaster;
+    std::vector<Enemy> enemies;
     BillboardManager bbManager;
     GUI* gui;
     Effects fx;
+    bool help;
 
     GameScene(SDL_Window*, SDL_Renderer*);
     ~GameScene();

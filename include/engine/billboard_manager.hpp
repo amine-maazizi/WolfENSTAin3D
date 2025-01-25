@@ -31,13 +31,12 @@ class BillboardManager {
     public:
         BillboardManager(Camera&, Effects& fx);
         void sortBillboards();
-        void appendBillboards(std::vector<Billboard*>, Camera&);
-        void processEnemies(Player&, int[MAP_HEIGHT][MAP_WIDTH]);
+        void addBillboard(std::shared_ptr<Billboard>, Camera&);
 
         Effects& fx;
 
         int number;
-        std::vector<std::unique_ptr<Billboard>> billboards;  // Store smart pointers to billboards
+        std::vector<std::shared_ptr<Billboard>> billboards;  // Change unique_ptr to shared_ptr
         std::vector<Enemy> enemies;
         std::vector<int> billboardOrder;
         std::vector<double> billboardDistance;

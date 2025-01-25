@@ -34,7 +34,7 @@ class GUI {
 public:
     GUI(SDL_Renderer*);
     ~GUI();
-    void render(float, int, int, int, int, int);
+    void render(float, int, int, int, int, int, bool);
 private:
     SDL_Renderer* renderer;
     TTF_Font* font;
@@ -44,5 +44,4 @@ private:
     AnimatedSprite character;
     AnimatedSprite gun;
     SDL_Texture* guiTex;
-    bool help;
 };

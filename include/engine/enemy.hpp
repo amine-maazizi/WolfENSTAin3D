@@ -20,16 +20,19 @@
 #include <engine/effects.hpp>
 #include <engine/a_star.hpp>
 
+
+#include<memory>
 #include <stdbool.h>
 
 class Player;
-class Enemy: public Billboard {
+class Enemy {
 public:
     Enemy(Vector2D<double>, int);
     Enemy(double, double, int);  
-    void moveEnemy(Player&, int[MAP_HEIGHT][MAP_WIDTH], Effects& fx);  
+    void moveEnemy(Player&, int[MAP_HEIGHT][MAP_WIDTH], Effects& fx, float);  
     void damage(float, Effects& fx);
 
+    std::shared_ptr<Billboard> bb;  // Change unique_ptr to shared_ptr
     float health;
     bool isAlive;
 private:

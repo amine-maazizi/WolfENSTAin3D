@@ -3,34 +3,19 @@
 // Constructor: Use unique_ptr to store billboards and link them with enemies
 BillboardManager::BillboardManager(Camera& cam, Effects& fx): fx(fx) {
     // Initializing some billboards and enemies
-    billboards.push_back(std::make_unique<Billboard>(2, 2, 7));
-    billboards.push_back(std::make_unique<Billboard>(2, 3, 7));
+    billboards.push_back(std::make_shared<Billboard>(2, 2, 7));
+    billboards.push_back(std::make_shared<Billboard>(2, 3, 7));
     
-    billboards.push_back(std::make_unique<Billboard>(7, 2, 8));
-    billboards.push_back(std::make_unique<Billboard>(8, 2, 8));
-    billboards.push_back(std::make_unique<Billboard>(2, 11, 8));
-    billboards.push_back(std::make_unique<Billboard>(15, 11, 8));
+    billboards.push_back(std::make_shared<Billboard>(7, 2, 8));
+    billboards.push_back(std::make_shared<Billboard>(8, 2, 8));
+    billboards.push_back(std::make_shared<Billboard>(2, 11, 8));
+    billboards.push_back(std::make_shared<Billboard>(15, 11, 8));
     
-    billboards.push_back(std::make_unique<Billboard>(2, 2, 9));
-    billboards.push_back(std::make_unique<Billboard>(15, 2, 9));
-    billboards.push_back(std::make_unique<Billboard>(2, 17, 9));
-    billboards.push_back(std::make_unique<Billboard>(15, 17, 9));
+    billboards.push_back(std::make_shared<Billboard>(2, 2, 9));
+    billboards.push_back(std::make_shared<Billboard>(15, 2, 9));
+    billboards.push_back(std::make_shared<Billboard>(2, 17, 9));
+    billboards.push_back(std::make_shared<Billboard>(15, 17, 9));
     
-    // Initialize enemies
-    enemies.push_back(Enemy(4, 5, 10)); 
-    enemies.push_back(Enemy(5.0, 8.0, 7));   // Enemy 2: Small room
-    // enemies.push_back(Enemy(7.0, 20.0, 9));  // Enemy 3: Intersection
-    // enemies.push_back(Enemy(8.0, 15.0, 9));  // Enemy 4: Mid-map
-    // enemies.push_back(Enemy(9.0, 18.0, 9));  // Enemy 5: Central challenge
-    // enemies.push_back(Enemy(10.0, 4.0, 7));  // Enemy 6: Guarding key items
-    // enemies.push_back(Enemy(12.0, 6.0, 7));  // Enemy 7: Dead-end ambush
-    // enemies.push_back(Enemy(13.0, 13.0, 9)); // Enemy 8: Room corner
-
-
-    // Link enemies to billboards (optional: if you want a separate billboard for each enemy)
-    for (auto& e : enemies) {
-        billboards.push_back(std::make_unique<Billboard>(e.position, e.texID)); // Creating new billboards for each enemy
-    }
 
     number = billboards.size();
 
@@ -60,43 +45,16 @@ void BillboardManager::sortBillboards() {
     }
 }
 
-// Append new billboards
-void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam) {
-    for (auto* bb : bbs) {
-        billboards.push_back(std::make_unique<Billboard>(*bb));  // Creating unique_ptr for each new billboard
-    }
+void BillboardManager::addBillboard(std::shared_ptr<Billboard> bb, Camera& cam) {
+    // Transfer ownership of the unique_ptr to the billboards vector
+    billboards.push_back(std::move(bb));
 
-    int start = number - 1;
-    number += bbs.size();
+    // Update metadata
+    int newBillboardIndex = number;  // The index of the new billboard
+    number++;
+    billboardOrder.push_back(newBillboardIndex);
+    billboardDistance.push_back((cam.position - billboards[newBillboardIndex]->position).length());
 
-    for (int i = start; i < number; i++) {
-        billboardOrder.push_back(i);
-        billboardDistance.push_back(
-           (cam.position - billboards[i]->position).length()
-        );
-    }
-
-    sortBillboards();
-}
-
-// Process enemy movements and update corresponding billboard positions
-void BillboardManager::processEnemies(Player& p, int map[MAP_HEIGHT][MAP_WIDTH]) {
-    // Process enemies and mark billboards for removal if enemies are not alive
-    for (size_t i = 0; i < enemies.size(); ++i) {
-        Enemy& e = enemies[i];
-        if (e.isAlive) {
-            e.moveEnemy(p, map, fx);
-        }
-         // Update the position of the corresponding billboard for each enemy
-        for (size_t j = 0; j < billboards.size(); ++j) {
-            if (billboards[j]->texID == e.texID) {
-                if (e.isAlive)
-                    billboards[j]->position = e.position;  // Update position
-                billboards[j]->visible = e.isAlive;
-                break;
-            }
-        }
-    }
-
+    // Re-sort the billboards
     sortBillboards();
 }
