@@ -22,13 +22,15 @@ void Player::shoot(float dmg, BillboardManager& bbManager) {
     Enemy*  closest_enemy = NULL;
     double min_angle = 0.0;
     for (auto& e : bbManager.enemies) {
-        double dist = (position - e.position).length(); 
-        Vector2D<double> dir = (position - e.position).normalized();
-        double angle = acos(direction * dir);
-        if (dist < distance && angle > 3 * M_PI / 4 && dist < 4) {
-            distance = (position - e.position).length();
-            min_angle = angle;
-            closest_enemy = &e;
+        if (e.isAlive) {
+            double dist = (position - e.position).length(); 
+            Vector2D<double> dir = (position - e.position).normalized();
+            double angle = acos(direction * dir);
+            if (dist < distance && angle > 3 * M_PI / 4 && dist < 4) {
+                distance = (position - e.position).length();
+                min_angle = angle;
+                closest_enemy = &e;
+            }
         }
     }
     

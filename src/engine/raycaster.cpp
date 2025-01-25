@@ -267,52 +267,54 @@ void Raycaster::castRays(Camera& cam, int worldMap[][MAP_WIDTH], BillboardManage
 
     // BILLBOARD CASTING
     for (int i = 0; i < bbManager.number; i++) {
-        // position relative du billboard
-        Vector2D<double> relPos = bbManager.billboards[i]->position - cam.position;
+        if (bbManager.billboards[i]->visible) {
+            // position relative du billboard
+            Vector2D<double> relPos = bbManager.billboards[i]->position - cam.position;
 
-        // Transformer le billboard avec l'inverse de la transformation de la camera
-        // TODO: usage d'une matrice de transformation est beacoup mieux ici
-        // TODO: penser soit ajouter GLM soit definire ma propre class Matrice 2x2 vue que je travaille en 2D
-        double invDet = 1.0 / (cam.plane.getX() * cam.direction.getY() - cam.direction.getX() * cam.plane.getY());
+            // Transformer le billboard avec l'inverse de la transformation de la camera
+            // TODO: usage d'une matrice de transformation est beacoup mieux ici
+            // TODO: penser soit ajouter GLM soit definire ma propre class Matrice 2x2 vue que je travaille en 2D
+            double invDet = 1.0 / (cam.plane.getX() * cam.direction.getY() - cam.direction.getX() * cam.plane.getY());
 
-        Vector2D<double> transform = Vector2D<double>(
-            cam.direction.getY() * relPos.getX() - cam.direction.getX() * relPos.getY(),
-            - cam.plane.getY() * relPos.getX() + cam.plane.getX() * relPos.getY()
-        ) * invDet;
+            Vector2D<double> transform = Vector2D<double>(
+                cam.direction.getY() * relPos.getX() - cam.direction.getX() * relPos.getY(),
+                - cam.plane.getY() * relPos.getX() + cam.plane.getX() * relPos.getY()
+            ) * invDet;
 
-        int bbScreenX = (int)(SCREEN_WIDTH / 2 * (1 + transform.getX() / transform.getY()));
+            int bbScreenX = (int)(SCREEN_WIDTH / 2 * (1 + transform.getX() / transform.getY()));
 
-        // Hauteur du billboard par rapport à l'écran
-        int bbHeight = abs((int)(SCREEN_HEIGHT / transform.getY())); // auteur transformée au lieu de la dist reél pour eviter l'effet 'Fisheye'
+            // Hauteur du billboard par rapport à l'écran
+            int bbHeight = abs((int)(SCREEN_HEIGHT / transform.getY())); // auteur transformée au lieu de la dist reél pour eviter l'effet 'Fisheye'
 
-        // Repratition verticale du sprite
-        int drawStartY = -bbHeight / 2 + SCREEN_HEIGHT / 2;
-        if (drawStartY < 0) drawStartY = 0;
-        int drawEndY = bbHeight / 2 + SCREEN_HEIGHT / 2;
-        if (drawEndY >= SCREEN_HEIGHT) drawEndY = SCREEN_HEIGHT - 1;
-        
-        // Epaisseur horizontal
-        int bbWidth = abs((int)(SCREEN_HEIGHT / transform.getY()));
-        int drawStartX = - bbWidth / 2 + bbScreenX;
-        if (drawStartX < 0) drawStartX = 0;
-        int drawEndX = bbWidth / 2 + bbScreenX;
-        if (drawEndX >= SCREEN_WIDTH) drawEndX = SCREEN_WIDTH - 1;
+            // Repratition verticale du sprite
+            int drawStartY = -bbHeight / 2 + SCREEN_HEIGHT / 2;
+            if (drawStartY < 0) drawStartY = 0;
+            int drawEndY = bbHeight / 2 + SCREEN_HEIGHT / 2;
+            if (drawEndY >= SCREEN_HEIGHT) drawEndY = SCREEN_HEIGHT - 1;
+            
+            // Epaisseur horizontal
+            int bbWidth = abs((int)(SCREEN_HEIGHT / transform.getY()));
+            int drawStartX = - bbWidth / 2 + bbScreenX;
+            if (drawStartX < 0) drawStartX = 0;
+            int drawEndX = bbWidth / 2 + bbScreenX;
+            if (drawEndX >= SCREEN_WIDTH) drawEndX = SCREEN_WIDTH - 1;
 
-        // insertion dans le buffer
-        for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
-            // int texX = (int)((stripe - (-bbWidth / 2 + bbScreenX)) * TEX_WIDTH / bbWidth) / 256;
-            int texX = (stripe - (-bbWidth / 2 + bbScreenX)) * TEX_WIDTH / bbWidth;
+            // insertion dans le buffer
+            for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
+                // int texX = (int)((stripe - (-bbWidth / 2 + bbScreenX)) * TEX_WIDTH / bbWidth) / 256;
+                int texX = (stripe - (-bbWidth / 2 + bbScreenX)) * TEX_WIDTH / bbWidth;
 
-            // On va stocker le sprite dans le buffer du rendering si et seulement si
-            // il est devant la  camera
-            // il est sur l'écran 
-            // Zbuffer + perp Dist
-            if (transform.getY() > 0 && stripe > 0 && stripe < SCREEN_WIDTH && transform.getY() < bbManager.ZBuffer[stripe] * 2.0) 
-            for (int y = drawStartY; y < drawEndY; y++) { // pour tous pixel dans le stripe 
-                int d = y * 256 - SCREEN_HEIGHT * 128 + bbHeight * 128; // les facteurs sont pour eviter floats
-                int texY = (d * TEX_HEIGHT) / (bbHeight * 256);
-                Uint32 color = texture[bbManager.billboards[bbManager.billboardOrder[i]]->texID][TEX_WIDTH * texY + texX];
-                if ((color & 0xFF000000) != 0) buffer[y * SCREEN_WIDTH + stripe] = color;
+                // On va stocker le sprite dans le buffer du rendering si et seulement si
+                // il est devant la  camera
+                // il est sur l'écran 
+                // Zbuffer + perp Dist
+                if (transform.getY() > 0 && stripe > 0 && stripe < SCREEN_WIDTH && transform.getY() < bbManager.ZBuffer[stripe] * 2.0) 
+                for (int y = drawStartY; y < drawEndY; y++) { // pour tous pixel dans le stripe 
+                    int d = y * 256 - SCREEN_HEIGHT * 128 + bbHeight * 128; // les facteurs sont pour eviter floats
+                    int texY = (d * TEX_HEIGHT) / (bbHeight * 256);
+                    Uint32 color = texture[bbManager.billboards[bbManager.billboardOrder[i]]->texID][TEX_WIDTH * texY + texX];
+                    if ((color & 0xFF000000) != 0) buffer[y * SCREEN_WIDTH + stripe] = color;
+                }
             }
         }
     }

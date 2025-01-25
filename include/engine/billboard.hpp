@@ -24,4 +24,5 @@ class Billboard {
 
         Vector2D<double> position;
         int texID;
+        bool visible;
 };

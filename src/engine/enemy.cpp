@@ -3,13 +3,15 @@
 Enemy::Enemy(Vector2D<double> pos, int id) :  Billboard(pos, id), cooldown(0.0f), health(100), isAlive(true) {
 }
 
-Enemy::Enemy(double x, double y, int id) :  Billboard(x, y, id), cooldown(0.0f), health(100), isAlive(true) {}
+Enemy::Enemy(double x, double y, int id) :  Billboard(x, y, id), cooldown(0.0f), health(100), isAlive(true) {
+}
 
 void Enemy::damage(float dmg, Effects& fx) {
     fx.playSfx(ENEMY_PAIN_SFX);
     if (health - dmg <= 0) {
         fx.playSfx(ENEMY_DIE_SFX);
         isAlive = false;
+        visible = false;
         return;
     }
     health -= dmg;
@@ -18,6 +20,7 @@ void Enemy::damage(float dmg, Effects& fx) {
 void Enemy::moveEnemy(Player& p, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx) {
     float dt = 0.06; // pour le moment
     
+    if (isAlive) {
     if (cooldown <= 0.0) {
         if ((p.position - position).length() < 4) {
             this->velocity = (p.position - position).normalized();
@@ -35,6 +38,7 @@ void Enemy::moveEnemy(Player& p, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx) {
         }
     } else {
         cooldown -= 0.1;
+    }
     }
 
     // AStar aStar(map);

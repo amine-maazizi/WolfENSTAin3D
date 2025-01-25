@@ -35,12 +35,14 @@ void Minimap::render(SDL_Renderer* renderer, Camera& cam, std::vector<Enemy>& en
     SDL_RenderFillRect(renderer, &dest);
 
     for (auto e: enemies) {
-        dest.x = DISPLAY_WIDTH - offset.getX() - mapsize + (e.position.getX()) * tilesize + psize / 2;
-        dest.y = e.position.getY() * tilesize + psize / 2 + offset.getY();
-        dest.w = psize;
-        dest.h = psize;
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderFillRect(renderer, &dest);
+        if (e.isAlive) {
+            dest.x = DISPLAY_WIDTH - offset.getX() - mapsize + (e.position.getX()) * tilesize + psize / 2;
+            dest.y = e.position.getY() * tilesize + psize / 2 + offset.getY();
+            dest.w = psize;
+            dest.h = psize;
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            SDL_RenderFillRect(renderer, &dest);
+        }
     }
 
 }   

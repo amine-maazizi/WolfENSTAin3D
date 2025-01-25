@@ -6,19 +6,19 @@ BillboardManager::BillboardManager(Camera& cam, Effects& fx): fx(fx) {
     billboards.push_back(std::make_unique<Billboard>(2, 2, 7));
     billboards.push_back(std::make_unique<Billboard>(2, 3, 7));
     
-    // billboards.push_back(std::make_unique<Billboard>(7, 2, 8));
-    // billboards.push_back(std::make_unique<Billboard>(8, 2, 8));
-    // billboards.push_back(std::make_unique<Billboard>(2, 11, 8));
-    // billboards.push_back(std::make_unique<Billboard>(15, 11, 8));
+    billboards.push_back(std::make_unique<Billboard>(7, 2, 8));
+    billboards.push_back(std::make_unique<Billboard>(8, 2, 8));
+    billboards.push_back(std::make_unique<Billboard>(2, 11, 8));
+    billboards.push_back(std::make_unique<Billboard>(15, 11, 8));
     
-    // billboards.push_back(std::make_unique<Billboard>(2, 2, 9));
-    // billboards.push_back(std::make_unique<Billboard>(15, 2, 9));
-    // billboards.push_back(std::make_unique<Billboard>(2, 17, 9));
-    // billboards.push_back(std::make_unique<Billboard>(15, 17, 9));
+    billboards.push_back(std::make_unique<Billboard>(2, 2, 9));
+    billboards.push_back(std::make_unique<Billboard>(15, 2, 9));
+    billboards.push_back(std::make_unique<Billboard>(2, 17, 9));
+    billboards.push_back(std::make_unique<Billboard>(15, 17, 9));
     
     // Initialize enemies
-    // enemies.push_back(Enemy(4, 5, 10)); 
-    // enemies.push_back(Enemy(5.0, 8.0, 7));   // Enemy 2: Small room
+    enemies.push_back(Enemy(4, 5, 10)); 
+    enemies.push_back(Enemy(5.0, 8.0, 7));   // Enemy 2: Small room
     // enemies.push_back(Enemy(7.0, 20.0, 9));  // Enemy 3: Intersection
     // enemies.push_back(Enemy(8.0, 15.0, 9));  // Enemy 4: Mid-map
     // enemies.push_back(Enemy(9.0, 18.0, 9));  // Enemy 5: Central challenge
@@ -81,44 +81,12 @@ void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam
 
 // Process enemy movements and update corresponding billboard positions
 void BillboardManager::processEnemies(Player& p, int map[MAP_HEIGHT][MAP_WIDTH]) {
-    // Track indices of billboards to remove
-    std::vector<int> billboardsToRemove;
 
     // Process enemies and mark billboards for removal if enemies are not alive
     for (size_t i = 0; i < enemies.size(); ++i) {
         Enemy& e = enemies[i];
-        e.moveEnemy(p, map, fx);
-
-        // Update the position of the corresponding billboard for each enemy
-        for (size_t j = 0; j < billboards.size(); ++j) {
-            if (billboards[j]->texID == e.texID) {
-                if (!e.isAlive) {
-                    billboardsToRemove.push_back(j);  // Mark billboard for removal
-                } else {
-                    billboards[j]->position = e.position;  // Update position
-                }
-                break;
-            }
-        }
+        if (e.isAlive) 
+            e.moveEnemy(p, map, fx);
     }
 
-    // Remove enemies that are not alive
-    enemies.erase(
-        std::remove_if(enemies.begin(), enemies.end(), [](const Enemy& e) {
-            return !e.isAlive;
-        }),
-        enemies.end()
-    );
-
-    // Remove marked billboards
-    for (auto it = billboardsToRemove.rbegin(); it != billboardsToRemove.rend(); ++it) {
-        int index = *it;
-        billboards.erase(billboards.begin() + index);
-        billboardOrder.erase(billboardOrder.begin() + index);
-        billboardDistance.erase(billboardDistance.begin() + index);
-    }
-
-    // Update the number of billboards and sort based on the new state
-    number = billboards.size();
-    sortBillboards();
 }
