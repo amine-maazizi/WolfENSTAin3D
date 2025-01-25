@@ -33,15 +33,16 @@
 [x] implémentation du score
 [x] implémentation du système de l'ammo basique
 [x] implémentation de l'élimination de l'enemi
-[/] developper la map et les enemies 
+[x] developper la map 
 [/] ajouter des objets pour faire jolie
+[/] ajouter des enemies
 [x] ajouter les effets sonores
 [x] ajout d'un animated sprite pour le joeur
 [x] ajout du système de scene
 
 [x] ajout d'un animated sprite pour le shooting
 [x] ajout de main menu
-[] ajout du mode select et character select
+[x] ajout du mode select
 
 [] multijoeur coopératif local
 
