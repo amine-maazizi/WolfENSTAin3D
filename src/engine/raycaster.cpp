@@ -312,7 +312,8 @@ void Raycaster::castRays(Camera& cam, int worldMap[][MAP_WIDTH], BillboardManage
                 for (int y = drawStartY; y < drawEndY; y++) { // pour tous pixel dans le stripe 
                     int d = y * 256 - SCREEN_HEIGHT * 128 + bbHeight * 128; // les facteurs sont pour eviter floats
                     int texY = (d * TEX_HEIGHT) / (bbHeight * 256);
-                    Uint32 color = texture[bbManager.billboards[bbManager.billboardOrder[i]]->texID][TEX_WIDTH * texY + texX];
+                    // i <-> bbManager.billboardOrder[i]
+                    Uint32 color = texture[bbManager.billboards[i]->texID][TEX_WIDTH * texY + texX];
                     if ((color & 0xFF000000) != 0) buffer[y * SCREEN_WIDTH + stripe] = color;
                 }
             }
