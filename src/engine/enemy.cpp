@@ -28,7 +28,7 @@ void Enemy::moveEnemy(Player& p, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx, fl
                 Vector2D<int> mapping = bb->position + velocity * dt;
 
                 // Validate indices
-                if (mapping.getX() < 0 || mapping.getX() >= MAP_WIDTH || mapping.getY() < 0 || mapping.getY() >= MAP_HEIGHT) {
+                if (mapping.getX() < 0 || mapping.getX() >= MAP_HEIGHT || mapping.getY() < 0 || mapping.getY() >= MAP_WIDTH) {
                     std::cerr << "Error: Out of bounds mapping at position (" 
                               << mapping.getX() << ", " << mapping.getY() << ")" << std::endl;
                     return;
