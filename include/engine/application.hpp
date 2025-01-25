@@ -38,7 +38,7 @@ class Application {
         ~Application();
 
         void handleInput();
-        void process();
+        void process(float);
         void render(float);
         void run();
 };

@@ -36,13 +36,15 @@
 [/] developper la map et les enemies 
 [/] ajouter des objets pour faire jolie
 [x] ajouter les effets sonores
-[] ajout d'un animated sprite pour le shooting
 [x] ajout d'un animated sprite pour le joeur
 [x] ajout du système de scene
 
-[] ajout de main menu
+[x] ajout d'un animated sprite pour le shooting
+[x] ajout de main menu
 [] ajout du mode select et character select
+
 [] multijoeur coopératif local
 
-
 [] implémentation de la mort et restart
+
+

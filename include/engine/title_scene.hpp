@@ -26,20 +26,41 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 class TitleScene : public Scene {
 public:
-    // Mon engin de raycasting
-    TitleScene(SDL_Window*, SDL_Renderer*);
+    TitleScene(SDL_Window* window, SDL_Renderer* renderer);
 
-    // Core 
-    int process(float);   
-    void render(float);             
-    int handleInput(const Uint8*);         
+    // Core functions
+    int process(float dt);
+    void render(float dt);
+    int handleInput(const Uint8* keystate);
 
-    // Lifecycle management : À implemnter si besoin
-    void onEnter();                  
-    void onExit();                   
-    void pause();                   
-    void resume();                   
+    // Lifecycle management
+    void onEnter();
+    void onExit();
+    void pause();
+    void resume();
+
+private:
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    Mix_Music* bgMusic;
+
+    // Background image and text
+    SDL_Surface* bgSurf;
+    SDL_Texture* bgTex;
+    TTF_Font* font;
+    SDL_Surface* startTextSurf;
+    SDL_Texture* startTextTex;
+
+    // Text blinking
+    float blinkTimer;
+    bool showText;
+
+    // Helper functions
+    void loadAssets();
+    void cleanUp();
 };

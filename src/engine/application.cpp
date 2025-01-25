@@ -89,8 +89,8 @@ void Application::handleInput() {
 }
 
 
-void Application::process() {
-    int newScene = scenes[this->currentScene]->process(0.0f);
+void Application::process(float dt) {
+    int newScene = scenes[this->currentScene]->process(dt);
     if (newScene != this->currentScene) {
         scenes[this->currentScene]->onExit();
         currentScene = newScene;
@@ -116,7 +116,7 @@ void Application::run() {
         lastTime = SDL_GetTicks();
 
         handleInput();
-        process();
+        process((float)dt);
         render(fps);
 
         SDL_Delay(16);

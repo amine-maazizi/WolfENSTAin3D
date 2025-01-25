@@ -26,7 +26,7 @@
 class AnimatedSprite {
 public:
     enum class Mode {
-        PLAY_ONCE,  // Play the animation once and stop
+        PLAY_ONCE,  // Play the animation once and reset
         LOOP,       // Loop the animation continuously
         MANUAL      // Manually control the frames
     };
@@ -41,6 +41,7 @@ public:
 
     void play();
     void stop();
+    void reset(); // New method to reset animation to initial state
 
     void update(float deltaTime);
     void render(int x, int y);

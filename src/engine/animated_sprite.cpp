@@ -38,13 +38,20 @@ void AnimatedSprite::setSpeed(float speed) {
 }
 
 void AnimatedSprite::play() {
-    isPlaying = true;
-    elapsedTime = 0.0f;
-    currentFrame = 0;
+    if (!isPlaying) {
+        isPlaying = true;
+        elapsedTime = 0.0f;
+        currentFrame = 0; // Restart animation
+    }
 }
 
 void AnimatedSprite::stop() {
     isPlaying = false;
+}
+
+void AnimatedSprite::reset() {
+    isPlaying = false;
+    currentFrame = 0; // Reset to the first frame
 }
 
 void AnimatedSprite::update(float deltaTime) {
@@ -59,11 +66,11 @@ void AnimatedSprite::update(float deltaTime) {
         currentFrame++;
 
         if (currentFrame >= static_cast<int>(frames.size())) {
-            if (loop || mode == Mode::LOOP) {
-                currentFrame = 0;
-            } else {
-                currentFrame = static_cast<int>(frames.size()) - 1;
-                isPlaying = false;
+            if (mode == Mode::LOOP) {
+                currentFrame = 0; // Restart loop
+            } else if (mode == Mode::PLAY_ONCE) {
+                currentFrame = 0; // Reset to initial frame after play once
+                isPlaying = false; // Stop animation
             }
         }
     }

@@ -3,7 +3,8 @@
 // TODO: add an offset based on length of str for each GUI textual element
 
 GUI::GUI(SDL_Renderer* rend) : renderer(rend), 
-    character(AnimatedSprite(renderer, "assets/lhuillier_spritesheet.png", 64, 64)) {
+    character(AnimatedSprite(renderer, "assets/lhuillier_spritesheet.png", 64, 64)), 
+    gun(AnimatedSprite(renderer, "assets/gun_spritesheet.png", 88, 74)) {
    font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 12);
     if (font == NULL) {
         printf("SDL n'a pas pu créer le font, erreur: %s\n", SDL_GetError());
@@ -28,6 +29,9 @@ GUI::GUI(SDL_Renderer* rend) : renderer(rend),
     }
 
     character.setMode(AnimatedSprite::Mode::MANUAL);
+    gun.setMode(AnimatedSprite::Mode::PLAY_ONCE);
+    gun.setLoop(false); // Ensure animation plays only once
+    gun.setSpeed(0.4f);
 
 }
 
@@ -51,7 +55,14 @@ void GUI::render(float fps, int level, int score, int lives, int health, int amm
     } else if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) {
         character.setFrame(1);
     }
+
+    if (keystate[SDL_SCANCODE_SPACE]) {
+        gun.play();
+    }
+
     character.render(264 * SCALING_FACTOR, 255 * SCALING_FACTOR);
+    gun.update(0.6f);
+    gun.render(276 * SCALING_FACTOR, 176 * SCALING_FACTOR);
 
     // Render the FPS
     std::ostringstream fpsStream;

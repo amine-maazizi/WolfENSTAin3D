@@ -42,5 +42,6 @@ private:
     SDL_Surface* pannelSurf;
     SDL_Texture* pannelTex;
     AnimatedSprite character;
+    AnimatedSprite gun;
     SDL_Texture* guiTex;
 };
