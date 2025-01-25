@@ -1,8 +1,8 @@
 /**
- * @file        title_scene.hpp
- * @brief       fichier entête qui comporte les elements de l'écran principale du jeu
+ * @file        select_scene.hpp
+ * @brief       fichier entête qui comporte les elements de l'écran de selection
  * @author      Amine Maazizi
- * @date        2025-01-23
+ * @date        2025-01-25
  * @version     1.0
  * 
  * @details
@@ -29,9 +29,10 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-class TitleScene : public Scene {
+
+class SelectScene : public Scene {
 public:
-    TitleScene(SDL_Window* window, SDL_Renderer* renderer);
+    SelectScene(SDL_Window* window, SDL_Renderer* renderer);
 
     // Core functions
     int process(float dt);
@@ -49,12 +50,11 @@ private:
     SDL_Renderer* renderer;
     Mix_Music* bgMusic;
 
-    // Background image and text
-    SDL_Surface* bgSurf;
-    SDL_Texture* bgTex;
+    // Menu options
     TTF_Font* font;
-    SDL_Surface* startTextSurf;
-    SDL_Texture* startTextTex;
+    std::vector<std::string> menuOptions;
+    int selectedOption; // Index of the currently selected option
+    bool isKeyPressed;
 
     // Text blinking
     float blinkTimer;

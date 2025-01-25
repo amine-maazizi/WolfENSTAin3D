@@ -44,4 +44,5 @@ private:
     AnimatedSprite character;
     AnimatedSprite gun;
     SDL_Texture* guiTex;
+    bool help;
 };

@@ -44,14 +44,16 @@ Application::Application() {
     }
 
     scenes[TITLE_SCENE] = new TitleScene(window, renderer);
+    scenes[SELECT_SCENE] = new SelectScene(window, renderer);
     scenes[GAME_SCENE] = new GameScene(window, renderer);
     this->currentScene = TITLE_SCENE;
     scenes[currentScene]->onEnter();
 }
 
 Application::~Application() {
-    delete scenes[0];
-    delete scenes[1];
+    delete scenes[TITLE_SCENE];
+    delete scenes[SELECT_SCENE];
+    delete scenes[GAME_SCENE];
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
     Mix_CloseAudio();

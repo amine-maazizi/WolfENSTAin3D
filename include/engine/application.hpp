@@ -21,6 +21,7 @@
 
 #include <engine/title_scene.hpp>
 #include <engine/game_scene.hpp>
+#include <engine/select_scene.hpp>
 
 
 
@@ -32,7 +33,7 @@ class Application {
 
         // Scenes
         int currentScene;
-        Scene* scenes[2];
+        Scene* scenes[3];
     public:
         Application();
         ~Application();

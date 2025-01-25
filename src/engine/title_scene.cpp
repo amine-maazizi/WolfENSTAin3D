@@ -100,7 +100,7 @@ void TitleScene::render(float) {
 
 int TitleScene::handleInput(const Uint8* keystate) {
     if (keystate[SDL_SCANCODE_RETURN]) {
-        return GAME_SCENE; // Transition to the next scene
+        return SELECT_SCENE; // Transition to the next scene
     }
     return TITLE_SCENE;
 }
