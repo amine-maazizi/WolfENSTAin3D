@@ -81,12 +81,22 @@ void BillboardManager::appendBillboards(std::vector<Billboard*> bbs, Camera& cam
 
 // Process enemy movements and update corresponding billboard positions
 void BillboardManager::processEnemies(Player& p, int map[MAP_HEIGHT][MAP_WIDTH]) {
-
     // Process enemies and mark billboards for removal if enemies are not alive
     for (size_t i = 0; i < enemies.size(); ++i) {
         Enemy& e = enemies[i];
-        if (e.isAlive) 
+        if (e.isAlive) {
             e.moveEnemy(p, map, fx);
+        }
+         // Update the position of the corresponding billboard for each enemy
+        for (size_t j = 0; j < billboards.size(); ++j) {
+            if (billboards[j]->texID == e.texID) {
+                if (e.isAlive)
+                    billboards[j]->position = e.position;  // Update position
+                billboards[j]->visible = e.isAlive;
+                break;
+            }
+        }
     }
 
+    sortBillboards();
 }

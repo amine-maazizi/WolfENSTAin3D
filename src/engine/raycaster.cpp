@@ -320,6 +320,7 @@ void Raycaster::castRays(Camera& cam, int worldMap[][MAP_WIDTH], BillboardManage
     }
 }
 
+
 void Raycaster::render(SDL_Renderer* renderer, SDL_Texture* bufferTex) {
     SDL_UpdateTexture(bufferTex, nullptr, buffer, SCREEN_WIDTH * sizeof(Uint32));
     SDL_RenderCopy(renderer, bufferTex, nullptr, nullptr);
