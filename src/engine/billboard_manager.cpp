@@ -3,19 +3,21 @@
 // Constructor: Use unique_ptr to store billboards and link them with enemies
 BillboardManager::BillboardManager(Camera& cam, Effects& fx): fx(fx) {
     // Initializing some billboards and enemies
-    billboards.push_back(std::make_unique<Billboard>(5.5, 2, 7));
-    billboards.push_back(std::make_unique<Billboard>(6, 3, 7));
-    billboards.push_back(std::make_unique<Billboard>(6.5, 2, 7));
-    billboards.push_back(std::make_unique<Billboard>(2, 17, 9));
-    billboards.push_back(std::make_unique<Billboard>(3, 18, 9));
-    billboards.push_back(std::make_unique<Billboard>(2, 19, 9));
-    billboards.push_back(std::make_unique<Billboard>(2, 2, 8));
-    billboards.push_back(std::make_unique<Billboard>(15, 31, 8));
-    billboards.push_back(std::make_unique<Billboard>(2, 31, 8));
-    billboards.push_back(std::make_unique<Billboard>(15, 2, 8));
-
+    billboards.push_back(std::make_unique<Billboard>(2, 2, 7));
+    billboards.push_back(std::make_unique<Billboard>(2, 3, 7));
+    
+    // billboards.push_back(std::make_unique<Billboard>(7, 2, 8));
+    // billboards.push_back(std::make_unique<Billboard>(8, 2, 8));
+    // billboards.push_back(std::make_unique<Billboard>(2, 11, 8));
+    // billboards.push_back(std::make_unique<Billboard>(15, 11, 8));
+    
+    // billboards.push_back(std::make_unique<Billboard>(2, 2, 9));
+    // billboards.push_back(std::make_unique<Billboard>(15, 2, 9));
+    // billboards.push_back(std::make_unique<Billboard>(2, 17, 9));
+    // billboards.push_back(std::make_unique<Billboard>(15, 17, 9));
+    
     // Initialize enemies
-    enemies.push_back(Enemy(4, 5, 10)); 
+    // enemies.push_back(Enemy(4, 5, 10)); 
     // enemies.push_back(Enemy(5.0, 8.0, 7));   // Enemy 2: Small room
     // enemies.push_back(Enemy(7.0, 20.0, 9));  // Enemy 3: Intersection
     // enemies.push_back(Enemy(8.0, 15.0, 9));  // Enemy 4: Mid-map

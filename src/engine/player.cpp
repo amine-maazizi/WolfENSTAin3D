@@ -1,6 +1,6 @@
 #include <engine/player.hpp>
 
-Player::Player(Effects& fx) : fx(fx), Camera(2, 2, -1, 0, 0.05, 0.04), health(1.0f), isAlive(true), cooldown(0.0f), lives(3), score(0), ammo(100) {}
+Player::Player(Effects& fx) : fx(fx), Camera(8, 2, -1, 0, 0.05, 0.04), health(1.0f), isAlive(true), cooldown(0.0f), lives(3), score(0), ammo(100) {}
 
 void Player::damage(float dmg) {
     health -= dmg;

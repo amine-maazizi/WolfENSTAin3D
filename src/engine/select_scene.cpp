@@ -23,7 +23,7 @@ void SelectScene::loadAssets() {
     }
 
     // Load background music
-    bgMusic = Mix_LoadMUS("assets/sfx/menu.mp3");
+    bgMusic = Mix_LoadMUS("assets/sfx/select_menu.mp3");
     if (!bgMusic) {
         std::cerr << "Failed to load music! Mix Error: " << Mix_GetError() << std::endl;
         exit(1);
