@@ -9,7 +9,7 @@ GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : player(Player(fx)), rayca
         exit(1);
     }
 
-       SDL_RenderClear(this->renderer);
+    SDL_RenderClear(this->renderer);
     buffTex = SDL_CreateTexture(renderer,
                                 SDL_PIXELFORMAT_ARGB8888,
                                 SDL_TEXTUREACCESS_STREAMING,
@@ -55,6 +55,9 @@ int GameScene::process(float dt) {
         e.moveEnemy(player, worldMap, fx, dt);
     }
     raycaster.castRays(this->player, worldMap, bbManager);
+    if (!player.isAlive) {
+        return TITLE_SCENE;
+    }
     return GAME_SCENE;
 }
 

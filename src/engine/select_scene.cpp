@@ -30,6 +30,10 @@ void SelectScene::loadAssets() {
     }
 }
 
+SelectScene::~SelectScene() {
+    cleanUp();
+}
+
 void SelectScene::cleanUp() {
     if (font) TTF_CloseFont(font);
     if (bgMusic) Mix_FreeMusic(bgMusic);
@@ -114,7 +118,6 @@ void SelectScene::onEnter() {
 
 void SelectScene::onExit() {
     Mix_HaltMusic();
-    cleanUp();
 }
 
 void SelectScene::pause() {}

@@ -33,6 +33,7 @@
 class SelectScene : public Scene {
 public:
     SelectScene(SDL_Window* window, SDL_Renderer* renderer);
+    ~SelectScene();
 
     // Core functions
     int process(float dt);

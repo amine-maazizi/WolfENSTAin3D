@@ -1,8 +1,8 @@
 /**
- * @file        title_scene.hpp
- * @brief       fichier entête qui comporte les elements de l'écran principale du jeu
+ * @file        sandbox_scene.hpp
+ * @brief       fichier entête pour la scene qui servira à tester des choses atypique au jeu 
  * @author      Amine Maazizi
- * @date        2025-01-23
+ * @date        2025-01-26
  * @version     1.0
  * 
  * @details
@@ -29,10 +29,10 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-class TitleScene : public Scene {
+
+class SandboxScene : public Scene {
 public:
-    TitleScene(SDL_Window* window, SDL_Renderer* renderer);
-    ~TitleScene();
+    SandboxScene(SDL_Window* window, SDL_Renderer* renderer);
 
     // Core functions
     int process(float dt);
@@ -45,21 +45,19 @@ public:
     void pause();
     void resume();
 
+
+    void saveCurrentFrameAsPNG(const std::string&);
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     Mix_Music* bgMusic;
 
-    // Background image and text
-    SDL_Surface* bgSurf;
-    SDL_Texture* bgTex;
-    TTF_Font* font;
-    SDL_Surface* startTextSurf;
-    SDL_Texture* startTextTex;
-
-    // Text blinking
-    float blinkTimer;
-    bool showText;
+    Player player;
+    Effects fx;
+    std::vector<Enemy> enemies;
+    BillboardManager bbManager;
+    SDL_Texture* buffTex;
+    Raycaster raycaster;
 
     // Helper functions
     void loadAssets();

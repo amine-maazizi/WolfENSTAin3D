@@ -40,7 +40,7 @@ void Enemy::moveEnemy(Player& p, int map[MAP_HEIGHT][MAP_WIDTH], Effects& fx, fl
                     }
                 } else {
                     // SHOOT
-                    p.damage(0.2);
+                    p.damage(0.34);
                     fx.shakeScreen(10, 10);
                     fx.reden(10, 100);
                     cooldown = 10.0;

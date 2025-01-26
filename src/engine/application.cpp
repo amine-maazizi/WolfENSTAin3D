@@ -46,6 +46,7 @@ Application::Application() {
     scenes[TITLE_SCENE] = new TitleScene(window, renderer);
     scenes[SELECT_SCENE] = new SelectScene(window, renderer);
     scenes[GAME_SCENE] = new GameScene(window, renderer);
+    scenes[SANDBOX_SCENE] = new SandboxScene(window, renderer);
     this->currentScene = TITLE_SCENE;
     scenes[currentScene]->onEnter();
 }
@@ -54,6 +55,7 @@ Application::~Application() {
     delete scenes[TITLE_SCENE];
     delete scenes[SELECT_SCENE];
     delete scenes[GAME_SCENE];
+    delete scenes[SANDBOX_SCENE];
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
     Mix_CloseAudio();

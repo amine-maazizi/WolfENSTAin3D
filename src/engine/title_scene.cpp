@@ -48,6 +48,9 @@ void TitleScene::loadAssets() {
     SDL_FreeSurface(startTextSurf);
 }
 
+TitleScene::~TitleScene() {
+    cleanUp();
+}
 
 void TitleScene::cleanUp() {
     if (bgTex) SDL_DestroyTexture(bgTex);
@@ -111,7 +114,6 @@ void TitleScene::onEnter() {
 
 void TitleScene::onExit() {
     Mix_HaltMusic();
-    cleanUp();
 }
 
 void TitleScene::pause() {}
