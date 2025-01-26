@@ -15,3 +15,5 @@ const char* texPaths[TEXTURE_NUMBER] = {
     "assets/lhuillier.png",
     "assets/crepon.png",
 };
+
+int gameMode = SOLO_MODE;

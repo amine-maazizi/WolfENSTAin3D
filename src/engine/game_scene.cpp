@@ -27,12 +27,15 @@ GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : player(Player(fx)), rayca
     // Initialize enemies using push_back
     enemies.push_back(Enemy(3, 6, 10));
     enemies.push_back(Enemy(15, 15, 12));
-    enemies.push_back(Enemy(8, 9, 12));
+    enemies.push_back(Enemy(8, 13, 12));
+    enemies.push_back(Enemy(10, 13, 10));
     enemies.push_back(Enemy(14, 16, 10));
     enemies.push_back(Enemy(13, 20, 10));
     enemies.push_back(Enemy(3, 29, 12));
     enemies.push_back(Enemy(3, 16, 10));
     enemies.push_back(Enemy(3, 23, 10));
+    enemies.push_back(Enemy(4, 23, 12));
+    enemies.push_back(Enemy(8, 23, 12));
 
     
     for (auto& enemy : enemies) {
@@ -40,7 +43,6 @@ GameScene::GameScene(SDL_Window* w, SDL_Renderer* r) : player(Player(fx)), rayca
     }
 
 
-    gui = new GUI(renderer);
 
 }
 
@@ -99,6 +101,7 @@ int GameScene::handleInput(const Uint8* keystate) {
 }
 
 void GameScene::onEnter() {
+    gui = new GUI(renderer);
     Mix_PlayMusic(bgMusic, -1);
 }
 

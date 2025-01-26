@@ -30,10 +30,6 @@ void SelectScene::loadAssets() {
     }
 }
 
-SelectScene::~SelectScene() {
-    cleanUp();
-}
-
 void SelectScene::cleanUp() {
     if (font) TTF_CloseFont(font);
     if (bgMusic) Mix_FreeMusic(bgMusic);
@@ -103,6 +99,7 @@ int SelectScene::handleInput(const Uint8* keystate) {
         }
     } else if (keystate[SDL_SCANCODE_RETURN]) {
         if (selectedOption >= 0) {
+            gameMode = selectedOption;
             return GAME_SCENE; // Transition to the selected scene
         }
     } else {
@@ -118,6 +115,7 @@ void SelectScene::onEnter() {
 
 void SelectScene::onExit() {
     Mix_HaltMusic();
+    cleanUp();
 }
 
 void SelectScene::pause() {}

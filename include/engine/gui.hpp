@@ -29,6 +29,8 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <array>      // For std::array
+#include <utility>    // For std::pair
 
 class GUI {
 public:
@@ -41,7 +43,7 @@ private:
     SDL_Surface* fpsText;
     SDL_Surface* pannelSurf;
     SDL_Texture* pannelTex;
-    AnimatedSprite character;
+    AnimatedSprite* character;
     AnimatedSprite gun;
     SDL_Texture* guiTex;
 };

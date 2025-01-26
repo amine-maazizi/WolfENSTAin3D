@@ -3,7 +3,6 @@
 // TODO: add an offset based on length of str for each GUI textual element
 
 GUI::GUI(SDL_Renderer* rend) : renderer(rend), 
-    character(AnimatedSprite(renderer, "assets/lhuillier_spritesheet.png", 64, 64)), 
     gun(AnimatedSprite(renderer, "assets/gun_spritesheet.png", 88, 74)) {
    font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 12);
     if (font == NULL) {
@@ -28,7 +27,19 @@ GUI::GUI(SDL_Renderer* rend) : renderer(rend),
         exit(1);
     }
 
-    character.setMode(AnimatedSprite::Mode::MANUAL);
+    switch (gameMode) {
+    case SOLO_MODE:
+        character = new AnimatedSprite(renderer, "assets/lhuillier_spritesheet.png", 64, 64);
+        break;
+    case HOST_MODE:
+        character = new AnimatedSprite(renderer, "assets/lhuillier_spritesheet.png", 64, 64);
+        break;
+    case JOIN_MODE:
+        character = new AnimatedSprite(renderer, "assets/bruno_spritesheet.png", 64, 64);
+        break;
+    }
+
+    character->setMode(AnimatedSprite::Mode::MANUAL);
     gun.setMode(AnimatedSprite::Mode::PLAY_ONCE);
     gun.setLoop(false); // Ensure animation plays only once
     gun.setSpeed(0.4f);
@@ -51,16 +62,16 @@ void GUI::render(float fps, int level, int score, int lives, int health, int amm
 
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
     if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) {
-        character.setFrame(0);
+        character->setFrame(0);
     } else if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) {
-        character.setFrame(1);
+        character->setFrame(1);
     }
 
     if (keystate[SDL_SCANCODE_SPACE]) {
         gun.play();
     }
 
-    character.render(264 * SCALING_FACTOR, 255 * SCALING_FACTOR);
+    character->render(270 * SCALING_FACTOR, 253  * SCALING_FACTOR);
     gun.update(0.6f);
     gun.render(276 * SCALING_FACTOR, 176 * SCALING_FACTOR);
 
@@ -120,7 +131,7 @@ void GUI::render(float fps, int level, int score, int lives, int health, int amm
     healthStream << health << "%";
     textSurface = TTF_RenderText_Solid(font, healthStream.str().c_str(), SDL_Color{255, 255, 255});
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    textRect.x = static_cast<int>(360 * SCALING_FACTOR);
+    textRect.x = static_cast<int>(340 * SCALING_FACTOR);
     textRect.y = static_cast<int>(286 * SCALING_FACTOR);
     textRect.w = calculateWidth(healthStream.str()); // Adjust width based on the number of characters
     SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
@@ -142,6 +153,7 @@ void GUI::render(float fps, int level, int score, int lives, int health, int amm
 
 
 GUI::~GUI() {
+    delete character;
     TTF_CloseFont(font);
     SDL_FreeSurface(fpsText);
     SDL_DestroyTexture(guiTex);

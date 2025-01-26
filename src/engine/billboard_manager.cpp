@@ -4,17 +4,24 @@
 BillboardManager::BillboardManager(Camera& cam, Effects& fx): fx(fx) {
     // Initializing some billboards and enemies
     billboards.push_back(std::make_shared<Billboard>(2, 2, 7));
-    billboards.push_back(std::make_shared<Billboard>(2, 3, 7));
+    billboards.push_back(std::make_shared<Billboard>(14, 2, 7));
+    billboards.push_back(std::make_shared<Billboard>(8, 9, 7));
+    billboards.push_back(std::make_shared<Billboard>(9, 9, 7));
+    billboards.push_back(std::make_shared<Billboard>(11, 19, 7));
+    billboards.push_back(std::make_shared<Billboard>(11, 24, 7));
     
     billboards.push_back(std::make_shared<Billboard>(7, 2, 8));
     billboards.push_back(std::make_shared<Billboard>(8, 2, 8));
     billboards.push_back(std::make_shared<Billboard>(2, 11, 8));
-    billboards.push_back(std::make_shared<Billboard>(15, 11, 8));
+    billboards.push_back(std::make_shared<Billboard>(14, 11, 8));
     
-    billboards.push_back(std::make_shared<Billboard>(2, 2, 9));
-    billboards.push_back(std::make_shared<Billboard>(15, 2, 9));
-    billboards.push_back(std::make_shared<Billboard>(2, 17, 9));
-    billboards.push_back(std::make_shared<Billboard>(15, 17, 9));
+    billboards.push_back(std::make_shared<Billboard>(2, 5, 9));
+    billboards.push_back(std::make_shared<Billboard>(2, 14, 9));
+    billboards.push_back(std::make_shared<Billboard>(14, 14, 9));
+    billboards.push_back(std::make_shared<Billboard>(14, 5, 9));
+    billboards.push_back(std::make_shared<Billboard>(14, 28, 9));
+    billboards.push_back(std::make_shared<Billboard>(14, 29, 9));
+    billboards.push_back(std::make_shared<Billboard>(14, 30, 9));
     
 
     number = billboards.size();
