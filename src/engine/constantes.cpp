@@ -11,9 +11,9 @@ const char* texPaths[TEXTURE_NUMBER] = {
     "assets/barrel.png", // 7
     "assets/greenlight.png", // 8
     "assets/pillar.png", // 9
-    "assets/chapou.png", // 10
-    "assets/lhuillier.png",
-    "assets/crepon.png",
+    "assets/placeholder_sprite.png", // 10
+    "assets/placeholder_sprite.png",
+    "assets/placeholder_sprite.png",
 };
 
 int gameMode = SOLO_MODE;

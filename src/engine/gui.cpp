@@ -29,13 +29,13 @@ GUI::GUI(SDL_Renderer* rend) : renderer(rend),
 
     switch (gameMode) {
     case SOLO_MODE:
-        character = new AnimatedSprite(renderer, "assets/lhuillier_spritesheet.png", 64, 64);
+        character = new AnimatedSprite(renderer, "assets/placeholder_sheet.png", 64, 64);
         break;
     case HOST_MODE:
-        character = new AnimatedSprite(renderer, "assets/lhuillier_spritesheet.png", 64, 64);
+        character = new AnimatedSprite(renderer, "assets/placeholder_sheet.png", 64, 64);
         break;
     case JOIN_MODE:
-        character = new AnimatedSprite(renderer, "assets/bruno_spritesheet.png", 64, 64);
+        character = new AnimatedSprite(renderer, "assets/placeholder_sheet.png", 64, 64);
         break;
     }
 

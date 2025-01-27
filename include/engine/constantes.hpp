@@ -24,6 +24,7 @@
 #define TITLE_SCENE 0
 #define SELECT_SCENE 1
 #define GAME_SCENE 2
+#define SANDBOX_SCENE 3
 
 #define TEXTURE_NUMBER  13
 #define TEX_WIDTH 64
