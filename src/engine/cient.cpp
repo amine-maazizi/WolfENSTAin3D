@@ -50,3 +50,15 @@ void Client::disconnect() {
     }
     SDLNet_Quit();
 }
+
+void Client::sendControlTransfer() {
+    sendMessage(std::string(1, CONTROL_TRANSFER));
+}
+
+void Client::sendPlayerInput(Uint8 inputState) {
+    sendMessage(std::string(1, PLAYER_INPUT) + std::string(1, inputState));
+}
+
+void Client::sendEnemyDeath(int enemyID) {
+    sendMessage(std::string(1, ENEMY_DEAD) + std::to_string(enemyID));
+}

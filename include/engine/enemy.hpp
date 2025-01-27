@@ -32,7 +32,7 @@ public:
     void moveEnemy(Player&, int[MAP_HEIGHT][MAP_WIDTH], Effects& fx, float);  
     void damage(float, Effects& fx);
 
-    std::shared_ptr<Billboard> bb;  // Change unique_ptr to shared_ptr
+    std::shared_ptr<Billboard> bb; 
     float health;
     bool isAlive;
 private:

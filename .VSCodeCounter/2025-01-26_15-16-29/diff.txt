@@ -1,0 +1,72 @@
+Date : 2025-01-26 15:16:29
+Directory : c:\Academic\Code\Object-Oriented-Raycasting\src
+Total : 42 files,  897 codes, -154 comments, 144 blanks, all 887 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C++      |         42 |        897 |       -154 |        144 |        887 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                             | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                |         42 |        897 |       -154 |        144 |        887 |
+| . (Files)                                                                        |          1 |          6 |          0 |          3 |          9 |
+| ..                                                                               |         21 |       -585 |       -301 |       -214 |     -1,100 |
+| ..\include                                                                       |         21 |       -585 |       -301 |       -214 |     -1,100 |
+| ..\include\engine                                                                |         21 |       -585 |       -301 |       -214 |     -1,100 |
+| engine                                                                           |         19 |      1,407 |        126 |        342 |      1,875 |
+| unit_tests                                                                       |          1 |         69 |         21 |         13 |        103 |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                         | language | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\a_star.hpp            | C++      |        -29 |        -12 |        -11 |        -52 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\animated_sprite.hpp   | C++      |        -37 |        -13 |        -14 |        -64 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\application.hpp       | C++      |        -24 |        -13 |         -8 |        -45 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\billboard.hpp         | C++      |        -10 |        -13 |         -5 |        -28 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\billboard_manager.hpp | C++      |        -24 |        -13 |         -8 |        -45 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\camera.hpp            | C++      |        -16 |        -13 |         -8 |        -37 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\client.hpp            | C++      |        -22 |        -11 |         -8 |        -41 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\constantes.hpp        | C++      |        -31 |        -11 |        -19 |        -61 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\effects.hpp           | C++      |        -27 |        -17 |        -12 |        -56 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\enemy.hpp             | C++      |        -22 |        -13 |         -7 |        -42 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\game_scene.hpp        | C++      |        -57 |        -25 |        -17 |        -99 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\gui.hpp               | C++      |        -24 |        -17 |         -6 |        -47 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\map.hpp               | C++      |         -5 |        -13 |         -4 |        -22 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\minimap.hpp           | C++      |        -11 |        -11 |         -4 |        -26 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\player.hpp            | C++      |        -28 |        -13 |        -12 |        -53 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\raycaster.hpp         | C++      |        -21 |        -15 |         -4 |        -40 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\scene.hpp             | C++      |        -17 |        -13 |         -9 |        -39 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\select_scene.hpp      | C++      |        -39 |        -16 |        -12 |        -67 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\server.hpp            | C++      |        -25 |        -13 |        -10 |        -48 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\title_scene.hpp       | C++      |        -39 |        -16 |        -11 |        -66 |
+| c:\Academic\Code\Object-Oriented-Raycasting\include\engine\vector2D.hpp          | C++      |        -77 |        -20 |        -25 |       -122 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\a_star.cpp                | C++      |         59 |          5 |         16 |         80 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\animated_sprite.cpp       | C++      |         83 |          3 |         20 |        106 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\application.cpp           | C++      |        105 |          1 |         27 |        133 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\billboard.cpp             | C++      |          5 |          0 |          2 |          7 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\billboard_manager.cpp     | C++      |         41 |          6 |         14 |         61 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\camera.cpp                | C++      |          9 |          0 |          6 |         15 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\cient.cpp                 | C++      |         51 |          0 |         14 |         65 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\constantes.cpp            | C++      |         17 |          0 |          4 |         21 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\effects.cpp               | C++      |         62 |          1 |         14 |         77 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\enemy.cpp                 | C++      |         45 |          9 |         14 |         68 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\game_scene.cpp            | C++      |        164 |         15 |         40 |        219 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\gui.cpp                   | C++      |        129 |         11 |         22 |        162 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\map.cpp                   | C++      |         19 |          0 |          2 |         21 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\minimap.cpp               | C++      |         40 |          3 |          5 |         48 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\player.cpp                | C++      |        108 |          7 |         20 |        135 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\raycaster.cpp             | C++      |        223 |         47 |         64 |        334 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\select_scene.cpp          | C++      |         93 |          9 |         22 |        124 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\server.cpp                | C++      |         63 |          0 |         16 |         79 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\engine\title_scene.cpp           | C++      |         91 |          9 |         20 |        120 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\main.cpp                         | C++      |          6 |          0 |          3 |          9 |
+| c:\Academic\Code\Object-Oriented-Raycasting\src\unit_tests\vector2D_tests.cpp    | C++      |         69 |         21 |         13 |        103 |
+| Total                                                                            |          |        897 |       -154 |        144 |        887 |
++----------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

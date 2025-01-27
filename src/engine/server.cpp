@@ -64,3 +64,15 @@ std::vector<std::string> Server::receiveMessages() {
 
     return messages;
 }
+
+void Server::sendControlTransfer() {
+    broadcast(std::string(1, CONTROL_TRANSFER));
+}
+
+void Server::sendPlayerInput(Uint8 inputState) {
+    broadcast(std::string(1, PLAYER_INPUT) + std::string(1, inputState));
+}
+
+void Server::sendEnemyDeath(int enemyID) {
+    broadcast(std::string(1, ENEMY_DEAD) + std::to_string(enemyID));
+}

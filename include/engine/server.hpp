@@ -23,6 +23,7 @@
 #include <string>
 
 #include <engine/player.hpp>
+#include <engine/constantes.hpp>
 
 
 
@@ -40,6 +41,8 @@ public:
     void stop();
     void broadcast(const std::string &message);
     std::vector<std::string> receiveMessages();
-
+    void sendControlTransfer();
+    void sendPlayerInput(Uint8 inputState);
+    void sendEnemyDeath(int enemyID);
 
 };

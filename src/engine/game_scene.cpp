@@ -46,7 +46,80 @@ GameScene::~GameScene() {
     SDL_DestroyTexture(this->buffTex);
 }
 
+
+// TODO: test just sending and receiving and viewing info bits
+// TODO: transfet mouvement
+// TODO: transfert ownership 
+// TODO: transfert deaths
 int GameScene::process(float dt) {
+    bool hasControl = (gameMode == HOST_MODE); // Host starts with control
+    const Uint8* keystate = SDL_GetKeyboardState(NULL);
+    Uint8 inputState = 0;
+    if (keystate[SDL_SCANCODE_UP])    inputState |= 0x01;
+    if (keystate[SDL_SCANCODE_DOWN])  inputState |= 0x02;
+    if (keystate[SDL_SCANCODE_LEFT])  inputState |= 0x04;
+    if (keystate[SDL_SCANCODE_RIGHT]) inputState |= 0x08;
+    if (keystate[SDL_SCANCODE_SPACE]) inputState |= 0x10; // Shooting
+    if (keystate[SDL_SCANCODE_LSHIFT]) inputState |= 0x20; // Sprinting
+
+
+    if (hasControl) {
+    if (gameMode == HOST_MODE) {
+        server.sendPlayerInput(inputState);
+    } else {
+        client.sendPlayerInput(inputState);
+    }
+    }
+
+    if (gameMode == HOST_MODE) {
+    auto messages = server.receiveMessages();
+    for (const auto &msg : messages) {
+        switch (msg[0]) {
+            case CONTROL_TRANSFER:
+                hasControl = true;
+                break;
+            case PLAYER_INPUT:
+                // Decode and apply input state
+                Uint8 inputState = msg[1];
+                // Apply movement/shooting based on inputState
+                break;
+            case ENEMY_DEAD:
+                int enemyID = std::stoi(msg.substr(1));
+                // Remove enemy with ID `enemyID` from the game
+                break;
+        }
+    }
+    } else if (gameMode == JOIN_MODE) {
+        std::string msg = client.receiveMessage();
+        if (!msg.empty()) {
+            switch (msg[0]) {
+                case CONTROL_TRANSFER:
+                    hasControl = true;
+                    break;
+                case PLAYER_INPUT:
+                    Uint8 inputState = msg[1];
+                    // Apply movement/shooting based on inputState
+                    break;
+                case ENEMY_DEAD:
+                    int enemyID = std::stoi(msg.substr(1));
+                    // Remove enemy with ID `enemyID` from the game
+                    break;
+            }
+        }
+    }
+
+    for (auto &enemy : enemies) {
+        if (enemy.isDead()) {
+            if (gameMode == HOST_MODE) {
+                server.sendEnemyDeath(enemy.id);
+            } else {
+                client.sendEnemyDeath(enemy.id);
+            }
+            // Remove enemy locally
+        }
+    }
+
+
     player.process(worldMap, enemies);
 
     for (auto &enemy : enemies) {

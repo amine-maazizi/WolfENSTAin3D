@@ -19,6 +19,8 @@
 #include <iostream>
 #include <string>
 
+#include <engine/constantes.hpp>
+
 class Client {
 private:
     TCPsocket clientSocket;
@@ -31,4 +33,9 @@ public:
     void sendMessage(const std::string &message);
     std::string receiveMessage();
     void disconnect();
+
+    void sendControlTransfer();
+    void sendPlayerInput(Uint8 inputState);
+    void sendEnemyDeath(int enemyID);
+
 };
