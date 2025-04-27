@@ -1,5 +1,7 @@
 # Object Orienteed Raycasting (WolfENSTAin3D)
 
+Un jeu de raycasting orienté objet inspiré de Wolfenstein 3D, utilisant SDL pour le rendu, un raycasting optimisé par DDA, des textures, un rendu de sol/plafond et une minimap. Il inclut une IA ennemie avec pathfinding A*, une interface graphique complète, des mécaniques de tir joueur/ennemi, des effets sonores, des sprites animés et un système de scènes, avec un mode multijoueur coopératif local en cours de développement.
+
 ![demo](output.png)
 
 
